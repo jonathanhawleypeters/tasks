@@ -1,7 +1,6 @@
 <script lang="ts">
   import type { Task } from '../helpers/types';
 
-  export let task: Task;
   export let updateTasks: (newTasks: Task[]) => void;
 
   let task: NewTask = {
@@ -30,3 +29,9 @@
   <input bind:value={task.description} id="add-to-do" type="text" placeholder="add task"/>
   <button disabled={task.description === ''} on:click={submitTask}>Add</button>
 </form>
+
+<style>
+  #add-task {
+    margin-bottom: 8px;
+  }
+</style>

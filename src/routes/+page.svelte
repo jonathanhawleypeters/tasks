@@ -3,6 +3,7 @@
   import { onMount } from 'svelte';
   import type { NewTask, Task } from '../helpers/types';
   import Navigation from '../components/Navigation.svelte';
+  import AddTask from '../components/AddTask.svelte';
   import PendingTasks from '../components/PendingTasks.svelte';
   import CompltedTasks from '../components/CompletedTasks.svelte';
   import History from '../components/History.svelte'
@@ -65,8 +66,6 @@
 <main>
   <Navigation />
 
-  <AddTask task={task} updateTasks={updateTasks} />
-
   {#if !localStorageIsSupported()}
     <p>Your browser does not appear to support localStorage. Tasks will not be saved between when you close the page.</p>
   {/if}
@@ -76,6 +75,7 @@
       tasks={tasks}
       completeTask={completeTask}
       deleteTask={removeTask}
+      updateTasks={updateTasks}
     />
     <CompltedTasks
       tasks={tasks}
@@ -86,9 +86,3 @@
   </div>
 
 </main>
-
-<style>
-  #add-task {
-    margin: 16px 0;
-  }
-</style>

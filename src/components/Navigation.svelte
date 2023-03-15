@@ -20,7 +20,7 @@
 	});
 </script>
 
-<div>
+<div id="navigation">
 	<a
 		class:selected={hash === '#current-tasks'}
 		href="#current-tasks"
@@ -37,6 +37,9 @@
 </div>
 
 <style>
+  #navigation {
+    margin-bottom: 16px;
+  }
 	a {
 		text-decoration: none;
 		color: unset;
