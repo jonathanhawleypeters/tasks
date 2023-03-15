@@ -5,7 +5,8 @@
   import Navigation from '../components/Navigation.svelte';
   import PendingTasks from '../components/PendingTasks.svelte';
   import CompltedTasks from '../components/CompletedTasks.svelte';
-  import { add, complete, history, uncomplete, deleteTask, localStorageIsSupported } from '../helpers/history';
+  import History from '../components/History.svelte'
+  import { add, complete, uncomplete, deleteTask, localStorageIsSupported } from '../helpers/history';
   import { stateFromLocalStorage } from '../helpers/state';
 
   let todo: NewTask = {
@@ -103,11 +104,7 @@
       uncompleteTask={uncompleteTask}
       deleteTask={removeTodo}
     />
-    <div id="history" class="section">
-      {#each $history as row}
-        <p>{row}</p>
-      {/each}
-    </div>
+    <History />
   </div>
 
 </main>
