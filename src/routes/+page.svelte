@@ -9,30 +9,11 @@
   import { add, complete, uncomplete, deleteTask, localStorageIsSupported } from '../helpers/history';
   import { stateFromLocalStorage } from '../helpers/state';
 
-  let todo: NewTask = {
-    description: '',
-    createdAt: 0,
-  };
-
   let tasks = stateFromLocalStorage();
 
-  const submitTodo = () => {
-    const newTask = {
-      ...todo,
-      createdAt: Date.now(),
-    };
-    tasks = [
-      ...tasks,
-      newTask,
-    ];
-    todo = {
-      description: '',
-      createdAt: 0,
-    };
-    add(newTask);
-  }
+  const updateTasks = (newTasks: Task[]) => tasks = newTasks; 
 
-  const removeTodo = (task: Task) => {
+  const removeTask = (task: Task) => {
     tasks = tasks.filter((item) => item !== task);
     deleteTask(task);
   }
@@ -84,10 +65,7 @@
 <main>
   <Navigation />
 
-  <form id="add-task" on:submit|preventDefault={submitTodo}>
-    <input bind:value={todo.description} id="add-to-do" type="text" placeholder="add task"/>
-    <button disabled={todo.description === ''} on:click={submitTodo}>Add</button>
-  </form>
+  <AddTask task={task} updateTasks={updateTasks} />
 
   {#if !localStorageIsSupported()}
     <p>Your browser does not appear to support localStorage. Tasks will not be saved between when you close the page.</p>
@@ -97,12 +75,12 @@
     <PendingTasks
       tasks={tasks}
       completeTask={completeTask}
-      deleteTask={removeTodo}
+      deleteTask={removeTask}
     />
     <CompltedTasks
       tasks={tasks}
       uncompleteTask={uncompleteTask}
-      deleteTask={removeTodo}
+      deleteTask={removeTask}
     />
     <History />
   </div>
