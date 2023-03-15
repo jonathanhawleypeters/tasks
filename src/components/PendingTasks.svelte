@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { CompleteTask, DeleteTask, Task } from '../helpers/types';
-  import PendingTask from './PendingTask.svelte';
+  import Task from './Task.svelte';
 
   export let tasks: Task[];
   export let completeTask: CompleteTask;
@@ -15,9 +15,9 @@
   {/if}
   {#each tasks as task}
     {#if !task.completed}
-      <PendingTask
+      <Task
         task={task}
-        completeTask={completeTask}
+        checkAction={completeTask}
         deleteTask={deleteTask}
       />
     {/if}

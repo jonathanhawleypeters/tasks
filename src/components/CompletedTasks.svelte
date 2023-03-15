@@ -1,5 +1,5 @@
 <script lang="ts">
-  import CompletedTask from './CompletedTask.svelte';
+  import Task from './Task.svelte';
   import type { DeleteTask, Task, UncompleteTask } from '../helpers/types';
 
   export let tasks: Task[];
@@ -15,9 +15,9 @@
   {/if}
   {#each tasks as task}
     {#if task.completed}
-      <CompletedTask
+      <Task
         task={task}
-        uncompleteTask={uncompleteTask}
+        checkAction={uncompleteTask}
         deleteTask={deleteTask}
       />
     {/if}
