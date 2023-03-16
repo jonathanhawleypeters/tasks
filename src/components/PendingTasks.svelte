@@ -6,13 +6,13 @@
   export let tasks: Task[];
   export let completeTask: CompleteTask;
   export let deleteTask: DeleteTask;
-  export let updateTasks: (newTasks: Task[]) => void;
+  export let addTask: (task: Task) => void;
 
   $: none = !tasks.some(task => !task.completed)
 </script>
 
 <div id="current-tasks" class="section">
-  <AddTask updateTasks={updateTasks} />
+  <AddTask addTask={addTask} />
   {#if none}
     All done!
   {/if}

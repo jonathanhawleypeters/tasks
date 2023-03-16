@@ -41,7 +41,14 @@
     margin-bottom: 16px;
   }
 	a {
+		font-size: 1.2rem;
+		font-family: 'Iowan Old Style', 'Palatino Linotype', 'URW Palladio L', P052, serif;
 		text-decoration: none;
 		color: unset;
 	}
+  a.selected {
+    text-decoration-line: underline !important;
+    text-decoration-color: darkorange;
+    text-decoration-thickness: 2px;
+  }
 </style>

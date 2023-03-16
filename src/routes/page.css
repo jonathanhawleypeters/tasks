@@ -3,23 +3,14 @@
   --padding-offset: 32px;
 }
 
+* {
+  font-family: Optima, Candara, 'Noto Sans', source-sans-pro, sans-serif;
+}
+
+
 body {
   color: #333;
-  background: linear-gradient(90deg, #f8f8f8 0%, white 50%, #f8f8f8 100%);
-}
-main {
-  padding: 16px;
-  width: var(--section-width);
-  max-width: 95vw;
-  height: 94vh;
-  display: flex;
-  flex-direction: column;
-  margin: 0 auto;
-
-}
-
-.remove-button:hover {
-  cursor: pointer;
+  background: lightgoldenrodyellow;
 }
 
 .sections-container {
@@ -54,8 +45,4 @@ main {
     min-width: 92vw;
   }
 
-}
-
-a.selected {
-  text-decoration: underline !important;
 }

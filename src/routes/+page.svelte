@@ -7,12 +7,12 @@
   import PendingTasks from '../components/PendingTasks.svelte';
   import CompltedTasks from '../components/CompletedTasks.svelte';
   import History from '../components/History.svelte'
-  import { add, complete, uncomplete, deleteTask, localStorageIsSupported } from '../helpers/history';
+  import { complete, uncomplete, deleteTask, localStorageIsSupported } from '../helpers/history';
   import { stateFromLocalStorage } from '../helpers/state';
 
   let tasks = stateFromLocalStorage();
 
-  const updateTasks = (newTasks: Task[]) => tasks = newTasks; 
+  const addTask = (task: Task) => tasks = [...tasks, task]; 
 
   const removeTask = (task: Task) => {
     tasks = tasks.filter((item) => item !== task);
@@ -75,7 +75,7 @@
       tasks={tasks}
       completeTask={completeTask}
       deleteTask={removeTask}
-      updateTasks={updateTasks}
+      addTask={addTask}
     />
     <CompltedTasks
       tasks={tasks}
@@ -86,3 +86,16 @@
   </div>
 
 </main>
+
+<style>
+  main {
+    padding: 16px;
+    width: var(--section-width);
+    max-width: 95vw;
+    /* 32px is double the padding value */
+    height: calc(100vh - 32px);
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+  }
+</style>

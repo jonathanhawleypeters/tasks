@@ -1,7 +1,8 @@
 <script lang="ts">
+  import { add } from '../helpers/history';
   import type { Task } from '../helpers/types';
 
-  export let updateTasks: (newTasks: Task[]) => void;
+  export let addTask: (task: Task) => void;
 
   let task: NewTask = {
     description: '',
@@ -17,16 +18,13 @@
       description: '',
       createdAt: 0,
     };
-    updateTasks([
-      ...tasks,
-      newTask,
-    ]);
+    addTask(newTask);
     add(newTask);
   }
 </script>
 
 <form id="add-task" on:submit|preventDefault={submitTask}>
-  <input bind:value={task.description} id="add-to-do" type="text" placeholder="add task"/>
+  <input bind:value={task.description} id="add-to-do" type="text" />
   <button disabled={task.description === ''} on:click={submitTask}>Add</button>
 </form>
 
