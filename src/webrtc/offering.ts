@@ -1,4 +1,4 @@
-import { createPeerConnection, datachannelmessage, datachannelopen } from "./common";
+import { createPeerConnection, datachannelmessage, datachannelopen, registerDataChannel } from "./common";
 
 let peerConnection: RTCPeerConnection | undefined;
 
@@ -11,14 +11,11 @@ export function clickcreateoffer() {
 
   if (!peerConnection) return;
 
-  // @ts-expect-error whatever
-  window.dataChannel = peerConnection.createDataChannel('chat');
+  const dataChannel = peerConnection.createDataChannel('chat');
+  registerDataChannel(dataChannel);
 
-  // @ts-expect-error whatever
-  window.dataChannel.onopen = datachannelopen;
-
-  // @ts-expect-error whatever
-  window.dataChannel.onmessage = datachannelmessage;
+  dataChannel.onopen = datachannelopen;
+  dataChannel.onmessage = datachannelmessage;
 
   const createOfferPromise = peerConnection.createOffer();
   createOfferPromise.then(createOfferDone(peerConnection), createOfferFailed);

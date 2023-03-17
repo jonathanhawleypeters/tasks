@@ -1,3 +1,8 @@
+let dataChannel: RTCDataChannel | undefined;
+
+export const registerDataChannel = (d: RTCDataChannel) => {
+  dataChannel = d;
+};
 
 function chatlog(msg: string) {
   const chatelement = document.getElementById('chatlog');
@@ -77,8 +82,7 @@ export function chatbuttonclick() {
   // @ts-expect-error whatever
   const text = textelement.value
 
-  // @ts-expect-error whatever
-  window.dataChannel.send(text);
+  dataChannel?.send(text);
   chatlog(text);
 
   // @ts-expect-error whatever
