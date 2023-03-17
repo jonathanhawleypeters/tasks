@@ -12,7 +12,7 @@ export function clickofferpasted() {
   if (!peerConnection) return;
 
   peerConnection.ondatachannel = handledatachannel;
-  const textelement = document.getElementById('textoffer');
+  const textelement = document.getElementById('answertextoffer');
 
   // @ts-expect-error whatever
   textelement.readOnly = true;
@@ -59,7 +59,7 @@ function setLocalFailed(reason: unknown) {
 function lasticecandidate() {
   if (!peerConnection) return;
   console.log('lasticecandidate');
-  const textelement = document.getElementById('textanswer');
+  const textelement = document.getElementById('answertextanswer');
 
   const answer = peerConnection.localDescription
   // @ts-expect-error whatever

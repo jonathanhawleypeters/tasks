@@ -1,5 +1,5 @@
 
-function chatlog(msg) {
+function chatlog(msg: string) {
   const chatelement = document.getElementById('chatlog');
   const newchatentry = document.createElement("p");
   newchatentry.textContent = '[' + new Date() + '] ' + msg;
@@ -28,7 +28,8 @@ export function createPeerConnection(lasticecandidate) {
   return peerConnection;
 }
 
-function handleicecandidate(lasticecandidate) {
+function handleicecandidate(lasticecandidate: () => void) {
+  // @ts-expect-error whatever
   return function(event) {
     if (event.candidate != null) {
       console.log('new ice candidate');
@@ -39,11 +40,13 @@ function handleicecandidate(lasticecandidate) {
   }
 }
 
+// @ts-expect-error whatever
 function handleconnectionstatechange(event) {
   console.log('handleconnectionstatechange');
   console.log(event);
 }
 
+// @ts-expect-error whatever
 function handleiceconnectionstatechange(event) {
   console.log('ice connection state: ' + event.target.iceConnectionState);
 }

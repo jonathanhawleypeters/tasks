@@ -46,7 +46,7 @@ function setLocalFailed(reason: unknown) {
 
 function lasticecandidate() {
   console.log('lasticecandidate');
-  const textelement = document.getElementById('textoffer');
+  const textelement = document.getElementById('offertextoffer');
   if (!textelement) return;
   const offer = peerConnection?.localDescription;
 
@@ -67,7 +67,7 @@ export function clickanswerpasted() {
   console.log('clickanswerpasted');
   // @ts-expect-error whatever
   document.getElementById('buttonanswerpasted').disabled = true;
-  const textelement = document.getElementById('textanswer');
+  const textelement = document.getElementById('offertextanswer');
 
   if (!textelement) return;
 

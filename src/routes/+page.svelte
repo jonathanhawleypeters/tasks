@@ -108,7 +108,7 @@
       <p>
       please copy the offer below and send it to a peer.
       </p>
-      <textarea id="textoffer" readonly
+      <textarea id="offertextoffer" readonly
         placeholder="please wait a few seconds"></textarea>
       <button id="buttonoffersent" on:click={clickoffersent} disabled>offer sent</button>
       </span>
@@ -117,7 +117,7 @@
       <p>
       please wait for peer to give answer and paste it below
       </p>
-      <textarea id="textanswer"
+      <textarea id="offertextanswer"
         placeholder="please paste answer from peer"></textarea>
       <button id="buttonanswerpasted" on:click={clickanswerpasted}>answer pasted</button>
       </span>
@@ -128,7 +128,7 @@
       <p>
       please wait for peer to give offer and paste it below
       </p>
-      <textarea id="textoffer"
+      <textarea id="answertextoffer"
         placeholder="please paste offer from peer"></textarea>
       <button id="buttonofferpasted" on:click={clickofferpasted}>offer pasted</button>
 
@@ -136,7 +136,7 @@
       <p>
       please send following answer to peer
       </p>
-      <textarea id="textanswer" readonly
+      <textarea id="answertextanswer" readonly
         placeholder="please wait a few seconds"></textarea>
       </span>
         
