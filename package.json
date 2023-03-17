@@ -31,5 +31,9 @@
 		"vite-plugin-mkcert": "^1.13.3",
 		"vitest": "^0.25.3"
 	},
-	"type": "module"
+	"type": "module",
+	"dependencies": {
+		"html5-qrcode": "^2.3.7",
+		"qrcode": "^1.5.1"
+	}
 }
