@@ -94,8 +94,8 @@
     padding: 16px;
     width: var(--section-width);
     max-width: 95vw;
-    /* 32px is double the padding value */
-    height: calc(100vh - 32px);
+    /* 48px is double the main padding + the navigation's margin bottom */
+    height: calc(100vh - 48px);
     display: flex;
     flex-direction: column;
     margin: 0 auto;
