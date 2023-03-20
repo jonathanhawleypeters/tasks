@@ -43,6 +43,9 @@
       responseOffer = response;
 
       renderCanvas(responseQRcodeCanvas, responseOffer);
+
+      // hide scanner
+      // explain the second step of the handshake: othe machine needs to scan the code
     }, () => {});
   }
 
