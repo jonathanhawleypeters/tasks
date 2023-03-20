@@ -51,7 +51,7 @@
 	}
   a.selected {
     text-decoration-line: underline !important;
-    text-decoration-color: darkorange;
+    text-decoration-color: navy;
     text-decoration-thickness: 2px;
   }
 </style>
