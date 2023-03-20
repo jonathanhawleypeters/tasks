@@ -11,8 +11,6 @@
   import { complete, uncomplete, deleteTask, localStorageIsSupported } from '../helpers/history';
   import { stateFromLocalStorage } from '../helpers/state';
 
-  export const prerender = true;
-
   let tasks = stateFromLocalStorage();
 
   const addTask = (task: Task) => tasks = [...tasks, task]; 
