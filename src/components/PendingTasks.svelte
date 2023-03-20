@@ -26,3 +26,10 @@
     {/if}
   {/each}
 </div>
+
+<style>
+  /* must change line-height to match the dimensions of the gradient */
+  /* #current-tasks {
+    background-image: repeating-linear-gradient(transparent 0px, transparent 27px, teal 28px);
+  } */
+</style>
