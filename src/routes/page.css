@@ -4,13 +4,20 @@
 }
 
 * {
+  box-sizing: border-box;
   font-family: Optima, Candara, 'Noto Sans', source-sans-pro, sans-serif;
 }
 
+html {
+  height: 100%;
+}
 
 body {
   color: #333;
   background: lightgoldenrodyellow;
+  /* 16px is supposed to compensate for  */
+  margin: 0px;
+  min-height: 100vh;
 }
 
 .sections-container {
