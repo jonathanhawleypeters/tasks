@@ -24,11 +24,15 @@
 </script>
 
 <form id="add-task" on:submit|preventDefault={submitTask}>
-  <input bind:value={task.description} id="add-to-do" type="text" />
-  <button disabled={task.description === ''} on:click={submitTask}>Add</button>
+  
+  <input bind:value={task.description} id="add-task-field" type="text" />
+  <button disabled={task.description === ''} on:click={submitTask}><label for="add-task-field" >Add task</label></button>
 </form>
 
 <style>
+  label {
+    display: block;
+  }
   #add-task {
     margin-bottom: 8px;
   }
