@@ -21,7 +21,7 @@
       <input size={updatedDescription.length} autofocus type="text" bind:value={updatedDescription} on:blur={onCancelEdit}/>
     </form>
   {:else}
-    <div on:click={onEdit} on:keypress={onEdit}><p>{task.description}</p></div>
+    <div title="Task description, click to edit" on:click={onEdit} on:keypress={onEdit}><p>{task.description}</p></div>
   {/if}
 </div>
 

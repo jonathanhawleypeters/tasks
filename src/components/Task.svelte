@@ -8,9 +8,9 @@
 </script>
 
 <div style="display: flex;" class="task" transition:fade>
-  <input checked={task.completed} on:change="{() => checkAction(task)}" type="checkbox">
+  <input title={task.completed ? "Undo complete task" : "Complete task"} checked={task.completed} on:change="{() => checkAction(task)}" type="checkbox">
+  <botton title="Delete task" type="button" class="remove-button" on:click={() => deleteTask(task)} on:keypress={() => deleteTask(task)}>🗑️</botton>
   <Description task={task} /> 
-  <botton class="remove-button" on:click={() => deleteTask(task)} on:keypress={() => deleteTask(task)}>remove</botton>
 </div>
 
 <style>
@@ -18,11 +18,6 @@
     display: flex;
     gap: 8px;
     line-height: 1.7;
-  }
-  .remove-button {
-    text-decoration-line: underline;
-    text-decoration-color: red;
-    text-decoration-thickness: 1.5px;
   }
   .remove-button:hover {
     cursor: pointer;

@@ -20,7 +20,7 @@
 	});
 </script>
 
-<div id="navigation">
+<nav>
 	<a
 		class:selected={hash === '#current-tasks'}
 		href="#current-tasks"
@@ -37,10 +37,10 @@
 	<!-- <a class:selected={hash === '#web-rtc-test'} href="#web-rtc-test" on:click|preventDefault={handleSelectView}
 		>WebRTC test</a
 	> -->
-</div>
+</nav>
 
 <style>
-  #navigation {
+  nav {
     margin-bottom: 16px;
   }
 	a {
