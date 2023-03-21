@@ -39,6 +39,7 @@ body {
   width: calc(var(--section-width) - var(--padding-offset));
   max-width: 95vw;
   max-height: 92vh;
+  min-height: 100%;
   overflow-y: scroll;
   scroll-snap-align: start;
   margin-right: 16px;

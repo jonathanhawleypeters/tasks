@@ -16,7 +16,7 @@
 <style>
   .task {
     display: flex;
-    gap: 8px;
+    gap: 10px;
     line-height: 1.7;
   }
   .remove-button:hover {
