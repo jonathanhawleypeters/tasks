@@ -2,6 +2,7 @@
   import './page.css';
   import { onMount } from 'svelte';
   import type { NewTask, Task } from '../helpers/types';
+  import { initialize } from '../helpers/database';
   import Navigation from '../components/Navigation.svelte';
   import AddTask from '../components/AddTask.svelte';
   import PendingTasks from '../components/PendingTasks.svelte';
@@ -39,6 +40,8 @@
   };
 
   onMount(() => {
+    // initialize the database
+    initialize();
     // this is stupid, but svelte is broken, so...
     // https://github.com/sveltejs/kit/issues/4216#issuecomment-1067754638
     document.getElementById(location.hash.slice(1))?.scrollIntoView();

@@ -1,5 +1,6 @@
 <script lang="ts">
   import { add } from '../helpers/history';
+  import { userAction } from '../helpers/database';
   import type { Task } from '../helpers/types';
 
   export let addTask: (task: Task) => void;
@@ -20,6 +21,7 @@
     };
     addTask(newTask);
     add(newTask);
+    userAction();
   }
 </script>
 

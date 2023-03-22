@@ -2,6 +2,7 @@
   import { fade } from 'svelte/transition';
   import type { Task, UncompleteTask, DeleteTask } from '../helpers/types';
   import Description from './Description.svelte';
+
   export let task: Task;
   export let checkAction: CompleteTask | UncompleteTask;
   export let deleteTask: DeleteTask;
