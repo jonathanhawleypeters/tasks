@@ -1,6 +1,6 @@
 <script lang="ts">
   import Task from './Task.svelte';
-  import { isToday, isWithinOffsetDays } from '../helpers/dates';
+  import { isToday, lastWeekExcludingToday, beforeLastWeek } from '../helpers/dates';
   import type { DeleteTask, Task, UncompleteTask } from '../helpers/types';
 
   export let tasks: Task[];
@@ -8,42 +8,51 @@
   export let deleteTask: DeleteTask;
 
   $: none = !tasks.some(task => task.completed);
+  $: today = tasks.some(task => task.completed && isToday(task.completedAt));
+  $: lastWeek = tasks.some(task => task.completed && lastWeekExcludingToday(task.completedAt));
+  $: older = tasks.some(task => task.completed && beforeLastWeek(task.completedAt));
 </script>
 
 <div id="completed-tasks" class="section">
   {#if none}
     No completed tasks to display
   {/if}
-  <h3>Today</h3>
-  {#each tasks as task}
-    {#if task.completed && isToday(task.completedAt)}
-      <Task
-        task={task}
-        checkAction={uncompleteTask}
-        deleteTask={deleteTask}
-      />
-    {/if}
-  {/each}
-  <h3>Within the last seven days</h3>
-  {#each tasks as task}
-    {#if task.completed && !isToday(task.completedAt) && isWithinOffsetDays(task.completedAt, -7)}
-      <Task
-        task={task}
-        checkAction={uncompleteTask}
-        deleteTask={deleteTask}
-      />
-    {/if}
-  {/each}
-  <h3>Older</h3>
-  {#each tasks as task}
-    {#if task.completed && !isWithinOffsetDays(task.completedAt, -7)}
-      <Task
-        task={task}
-        checkAction={uncompleteTask}
-        deleteTask={deleteTask}
-      />
-    {/if}
-  {/each}
+  {#if today}
+    <h3>Today</h3>
+    {#each tasks as task}
+      {#if task.completed && isToday(task.completedAt)}
+        <Task
+          task={task}
+          checkAction={uncompleteTask}
+          deleteTask={deleteTask}
+        />
+      {/if}
+    {/each}
+  {/if}
+  {#if lastWeek}
+    <h3>Within the last seven days</h3>
+    {#each tasks as task}
+      {#if task.completed && lastWeekExcludingToday(task.completedAt)}
+        <Task
+          task={task}
+          checkAction={uncompleteTask}
+          deleteTask={deleteTask}
+        />
+      {/if}
+    {/each}
+  {/if}
+  {#if older}
+    <h3>Older</h3>
+    {#each tasks as task}
+      {#if task.completed && beforeLastWeek(task.completedAt)}
+        <Task
+          task={task}
+          checkAction={uncompleteTask}
+          deleteTask={deleteTask}
+        />
+      {/if}
+    {/each}
+  {/if}
 </div>
 
 <style>

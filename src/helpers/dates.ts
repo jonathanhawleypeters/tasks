@@ -6,7 +6,7 @@ export const isToday = (date: number) => {
     someDate.getFullYear() == today.getFullYear()
 }
 
-export const isWithinOffsetDays = (date: number, offsetDays : number) => {
+const isWithinOffsetDays = (date: number, offsetDays : number) => {
   const today = new Date();
   const offsetDate = new Date(today.getFullYear(), today.getMonth(), today.getDate() + offsetDays);
 
@@ -15,4 +15,12 @@ export const isWithinOffsetDays = (date: number, offsetDays : number) => {
   return offsetDays > 0
     ? testDate >= today && testDate <= offsetDate
     : testDate <= today && testDate >= offsetDate;
+}
+
+export const lastWeekExcludingToday = (date: number): boolean => {
+  return !isToday(date) && isWithinOffsetDays(date, -7)
+}
+
+export const beforeLastWeek = (date: number): boolean => {
+  return !isWithinOffsetDays(date, -7);
 }
