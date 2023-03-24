@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { descriptionUpdate } from '../helpers/history';
+  import { updateDescription } from '../helpers/database';
   import type { Task } from '../helpers/types';
 
   export let task: Task;
@@ -11,7 +11,7 @@
   const onUpdateDescription = () => {
     task.description = updatedDescription;
     editing = false;
-    descriptionUpdate(task);
+    updateDescription(task.createdAt, updatedDescription);
   }
 </script>
 

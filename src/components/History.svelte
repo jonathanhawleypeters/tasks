@@ -1,10 +1,15 @@
 <script lang="ts">
-    import { history } from '../helpers/history';
+  import history from '../helpers/history';
+  import HistoryRow from './HistoryRow.svelte';
 </script>
 
-<div id="history" class="section">
-  <p>{$history.length} rows</p>
+<table id="history" class="section">
+  <thead>
+    <td>Kind</td>
+    <td>Time</td>
+    <td>Description</td>
+  </thead>
   {#each $history as row}
-    <p>{row}</p>
+    <HistoryRow row={row} />
   {/each}
-</div>
+</table>

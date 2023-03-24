@@ -1,7 +1,6 @@
 <script lang="ts">
-  import { add } from '../helpers/history';
-  import { userAction } from '../helpers/database';
-  import type { Task } from '../helpers/types';
+  import { addTask as addTaskToDatabase } from '../helpers/database';
+  import { ActionType, type Task } from '../helpers/types';
 
   export let addTask: (task: Task) => void;
 
@@ -11,17 +10,17 @@
   };
 
   const submitTask = () => {
+    const createdAt = Date.now();
     const newTask = {
       ...task,
-      createdAt: Date.now(),
+      createdAt,
     };
     task = {
       description: '',
       createdAt: 0,
     };
     addTask(newTask);
-    add(newTask);
-    userAction();
+    addTaskToDatabase(newTask.description);
   }
 </script>
 

@@ -2,23 +2,27 @@
   import './page.css';
   import { onMount } from 'svelte';
   import type { NewTask, Task } from '../helpers/types';
-  import { initialize } from '../helpers/database';
+  import {
+    initialize,
+    tasks as databaseTasks,
+    completeTask as complete,
+    uncompleteTask as uncomplete,
+    deleteTask,
+  } from '../helpers/database';
   import Navigation from '../components/Navigation.svelte';
   import AddTask from '../components/AddTask.svelte';
   import PendingTasks from '../components/PendingTasks.svelte';
   import CompltedTasks from '../components/CompletedTasks.svelte';
   import History from '../components/History.svelte';
   import WebRTCdemo from '../components/WebRTCdemo.svelte';
-  import { complete, uncomplete, deleteTask, localStorageIsSupported } from '../helpers/history';
-  import { stateFromLocalStorage } from '../helpers/state';
-
-  let tasks = stateFromLocalStorage();
+  
+  let tasks = [];
 
   const addTask = (task: Task) => tasks = [...tasks, task]; 
 
   const removeTask = (task: Task) => {
     tasks = tasks.filter((item) => item !== task);
-    deleteTask(task);
+    deleteTask(task.createdAt);
   }
 
   const completeTask = (task: Task) => {
@@ -27,7 +31,7 @@
 
     tasks = tasks;
     
-    complete(task);
+    complete(task.createdAt);
   };
 
   const uncompleteTask = (task: Task) => {
@@ -36,12 +40,16 @@
   
     tasks = tasks;
 
-    uncomplete(task);
+    uncomplete(task.createdAt);
   };
 
   onMount(() => {
     // initialize the database
-    initialize();
+    initialize(() => {
+      databaseTasks((dbTasks) => {
+        tasks = dbTasks;
+      });
+    });
     // this is stupid, but svelte is broken, so...
     // https://github.com/sveltejs/kit/issues/4216#issuecomment-1067754638
     document.getElementById(location.hash.slice(1))?.scrollIntoView();
@@ -69,10 +77,6 @@
 
 <main>
   <Navigation />
-
-  {#if !localStorageIsSupported()}
-    <p>Your browser does not appear to support localStorage. Tasks will not be saved between when you close the page.</p>
-  {/if}
 
   <div class="sections-container">
     <PendingTasks

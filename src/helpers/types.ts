@@ -9,12 +9,12 @@ export type Task = {
 export type NewTask = Omit<Task, 'completedAt' | 'completed'>;
 
 export enum ActionType {
-  add = 'ADD',
-  complete = 'COMPLETE',
-  uncomplete = 'UNCOMPLETE',
-  update = 'UPDATE',
-  schedule = 'SCHEDULE',
-  delete = 'DELETE',
+  add = 'A', // add a task
+  complete = 'C', // mark a task completed
+  uncomplete = 'I', // make a completed task incomplete
+  update = 'U', // update the description text
+  schedule = 'S', // schedule a task for a date
+  delete = 'D', // delete a task
 }
 
 export type TaskAction = {
