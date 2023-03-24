@@ -45,7 +45,6 @@
   }
 	a {
 		font-size: 1.2rem;
-		font-family: 'Iowan Old Style', 'Palatino Linotype', 'URW Palladio L', P052, serif;
 		text-decoration: none;
 		color: unset;
 	}

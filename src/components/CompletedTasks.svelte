@@ -64,6 +64,5 @@
     margin-inline-start: 0px;
     margin-inline-end: 0px;
     font-weight: initial;
-    font-family: 'Iowan Old Style', 'Palatino Linotype', 'URW Palladio L', P052, serif;
   }
 </style>

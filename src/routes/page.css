@@ -8,6 +8,10 @@
   font-family: Optima, Candara, 'Noto Sans', source-sans-pro, sans-serif;
 }
 
+nav a, h3, td {
+  font-family: 'Iowan Old Style', 'Palatino Linotype', 'URW Palladio L', P052, serif;
+}
+
 html {
   height: 100%;
 }
