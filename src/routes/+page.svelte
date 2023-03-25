@@ -15,6 +15,7 @@
   import CompltedTasks from '../components/CompletedTasks.svelte';
   import History from '../components/History.svelte';
   import WebRTCdemo from '../components/WebRTCdemo.svelte';
+  import SyncTasks from '../components/SyncTasks.svelte';
   
   let tasks = [];
 
@@ -92,6 +93,7 @@
     />
     <History />
     <!-- <WebRTCdemo /> -->
+    <SyncTasks />
   </div>
 
 </main>

@@ -34,6 +34,9 @@
 	<a class:selected={hash === '#history'} href="#history" on:click|preventDefault={handleSelectView}
 		>History</a
 	>
+	<a class:selected={hash === '#sync-tasks'} href="#sync-tasks" on:click|preventDefault={handleSelectView}
+		>Sync Tasks</a
+	>
 	<!-- <a class:selected={hash === '#web-rtc-test'} href="#web-rtc-test" on:click|preventDefault={handleSelectView}
 		>WebRTC test</a
 	> -->
