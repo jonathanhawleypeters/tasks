@@ -23,4 +23,4 @@
   .remove-button:hover {
     cursor: pointer;
   }
-  </style>
+</style>

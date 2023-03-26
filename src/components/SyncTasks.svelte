@@ -1,12 +1,19 @@
 <script lang="ts">
+  import { onMount } from 'svelte';
   import { fade } from 'svelte/transition';
-  import { start } from '../helpers/syncTasks';
+  import { start, peers, state } from '../helpers/syncTasks';
   let copied = false;
   // validate and escape deviceName and connectionId
   // persist this
-  let connectionId = crypto.randomUUID();
+  let connectionId = '';
   // persist this
-  let deviceName = "ignorant_banana";
+  let deviceName = '';
+
+  const handleRequestId = () => {
+    connectionId = crypto.randomUUID();
+
+    localStorage.setItem('connectionId', connectionId);
+  };
   // add a setting to automatically sync when both devices are online
   const copyConnectionId = () => {
     try {
@@ -19,24 +26,73 @@
       console.error(error);
     }
   }
+  const handleConnectionIdInput = (event) => {
+    if (!(event?.target instanceof HTMLInputElement)) return;
+
+    connectionId = event.target.value;
+
+    localStorage.setItem('connectionId', connectionId);
+
+    // persist connection id
+  }
+
+  const handleDeviceNameInput = (event) => {
+    if (!(event?.target instanceof HTMLInputElement)) return;
+
+    deviceName = event.target.value;
+
+    localStorage.setItem('deviceName', deviceName);
+  }
+
+  // onMount look up persisted connection id
+  onMount(() => {
+    const storedConnectionID = localStorage.getItem('connectionId');
+    const storedDeviceName = localStorage.getItem('deviceName');
+
+    if (storedConnectionID) {
+      connectionId = storedConnectionID;
+    };
+
+    if (storedDeviceName) {
+      deviceName = storedDeviceName;
+    }
+
+    start(deviceName, connectionId);
+  })
+
+  const onBlur = () => {
+    start(deviceName, connectionId);
+  }
 </script>
 
 <div id="sync-tasks" class="section">
   <h3>Sync Tasks</h3>
+  <button on:click|preventDefault={handleRequestId}>Generate connection ID</button>
 
   <button on:click|preventDefault={copyConnectionId}>Copy connection id</button>
+  <!-- perform validations -->
+  <input pattern="^[a-zA-Z0-9_-]*$" size={37} bind:value={connectionId} on:input={handleConnectionIdInput} on:blur|preventDefault={onBlur}/>
   {#if copied}
     <span transition:fade>Copied!</span>
   {/if}
-  <input bind:value={connectionId} />
   <p>a random id to coordinate between your devices</p>
-
 
   <hr />
 
   <label for="device-name">Device name</label>
-  <input id="device-name" bind:value={deviceName} />
+  <!-- perform validations -->
+  <input pattern="^[a-zA-Z0-9_-]*$" id="device-name" bind:value={deviceName} on:input={handleDeviceNameInput} on:blur|preventDefault={onBlur}/>
 
   <hr />
-  <button on:click|preventDefault={() => start(deviceName, connectionId)}>Sync todos</button>
+  <span>Connected peers</span>
+  {#if $state === "connected"}
+    💚
+  {:else if $state === "connecting"}
+    💛
+  {:else } 
+    💔
+  {/if}
+  {#each $peers as peer}
+    <p>{peer.client_id}</p>
+  {/each}
 </div>
