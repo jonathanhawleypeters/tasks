@@ -4,7 +4,7 @@
 </script>
 
 <div id="history" class="section">
-  <table >
+  <table>
     <thead>
       <td>Kind</td>
       <td>Time</td>
@@ -15,3 +15,11 @@
     {/each}
   </table>
 </div>
+
+<style>
+  td {
+    position: sticky;
+    top: 0px;
+    background: lightgoldenrodyellow;
+  }
+</style>
