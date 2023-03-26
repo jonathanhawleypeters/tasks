@@ -9,6 +9,7 @@
     uncompleteTask as uncomplete,
     deleteTask,
   } from '../helpers/database';
+  import selectedView from '../helpers/selectedView';
   import Navigation from '../components/Navigation.svelte';
   import AddTask from '../components/AddTask.svelte';
   import PendingTasks from '../components/PendingTasks.svelte';
@@ -58,14 +59,14 @@
     function onIntersectionChange(sections) {
       sections.forEach(section => {
         if (section.isIntersecting) {
-          location.hash = `#${section.target.id}`;
+          selectedView.update(`#${section.target.id}`, 600);
         }
       })
     }
 
     const observer = new IntersectionObserver(onIntersectionChange, {
       root: document.querySelector('.sectionsContainer'),   // default is the viewport
-      threshold: .5 // percentage of target's visible area. Triggers "onIntersection"
+      threshold: .7 // percentage of target's visible area. Triggers "onIntersection"
     })
 
     for (const section of document.querySelectorAll('.section')) {

@@ -3,13 +3,15 @@
   import HistoryRow from './HistoryRow.svelte';
 </script>
 
-<table id="history" class="section">
-  <thead>
-    <td>Kind</td>
-    <td>Time</td>
-    <td>Description</td>
-  </thead>
-  {#each $history as row}
-    <HistoryRow row={row} />
-  {/each}
-</table>
+<div id="history" class="section">
+  <table >
+    <thead>
+      <td>Kind</td>
+      <td>Time</td>
+      <td>Description</td>
+    </thead>
+    {#each $history as row}
+      <HistoryRow row={row} />
+    {/each}
+  </table>
+</div>

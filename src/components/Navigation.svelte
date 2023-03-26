@@ -1,43 +1,41 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
-
-	let hash: string;
+	import { onMount } from "svelte";
+	import selectedView from '../helpers/selectedView';
 
 	function handleSelectView({ target }) {
 		const href = target?.getAttribute('href');
 		if (!href) return;
-		location.hash = href;
+		selectedView.update(href);
 	}
 
 	onMount(() => {
-		hash = location.hash;
+		selectedView.update(location.hash);
+		window.addEventListener('hashchange', () => {
+			const id = (location.hash || "#current-tasks").slice(1);
 
-		function locationHashChanged() {
-			hash = location.hash;
-		}
-
-		window.addEventListener('hashchange', locationHashChanged);
+			document.getElementById(id)?.scrollIntoView();
+		});
 	});
 </script>
 
 <nav>
 	<a
-		class:selected={hash === '#current-tasks'}
+		class:selected={$selectedView === '#current-tasks'}
 		href="#current-tasks"
 		on:click|preventDefault={handleSelectView}>Tasks</a
 	>
 	<a
-		class:selected={hash === '#completed-tasks'}
+		class:selected={$selectedView === '#completed-tasks'}
 		href="#completed-tasks"
 		on:click|preventDefault={handleSelectView}>Completed</a
 	>
-	<a class:selected={hash === '#history'} href="#history" on:click|preventDefault={handleSelectView}
+	<a class:selected={$selectedView === '#history'} href="#history" on:click|preventDefault={handleSelectView}
 		>History</a
 	>
-	<a class:selected={hash === '#sync-tasks'} href="#sync-tasks" on:click|preventDefault={handleSelectView}
+	<a class:selected={$selectedView === '#sync-tasks'} href="#sync-tasks" on:click|preventDefault={handleSelectView}
 		>Sync Tasks</a
 	>
-	<!-- <a class:selected={hash === '#web-rtc-test'} href="#web-rtc-test" on:click|preventDefault={handleSelectView}
+	<!-- <a class:selected={$selectedView === '#web-rtc-test'} href="#web-rtc-test" on:click|preventDefault={handleSelectView}
 		>WebRTC test</a
 	> -->
 </nav>

@@ -2,6 +2,7 @@
   import { fade } from 'svelte/transition';
   import { start } from '../helpers/syncTasks';
   let copied = false;
+  // validate and escape deviceName and connectionId
   // persist this
   let connectionId = crypto.randomUUID();
   // persist this
