@@ -28,7 +28,7 @@ export const typeLabel = (action: Action): string => {
   }
 };
 
-const dateDisplayOptions = {
+const dateDisplayOptions: Intl.DateTimeFormatOptions = {
   month: '2-digit',
   day: '2-digit',
   year: '2-digit',
@@ -37,7 +37,8 @@ const dateDisplayOptions = {
   second: '2-digit',
 };
 
-export const dateForDisplay = (date: number): string => new Date(date).toLocaleDateString(undefined, dateDisplayOptions);
+export const dateForDisplay = (date: number): string => new Date(date)
+  .toLocaleDateString(undefined, dateDisplayOptions);
 
 const historyStore = writable<Action[]>([]);
 
