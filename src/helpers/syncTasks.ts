@@ -1,7 +1,7 @@
 // Store up all these peers and messages
 // persist the WebRTC store using localstorage
 import { writable, get } from "svelte/store";
-import P2PCF from 'p2pcf';
+import { browser } from '$app/environment';
 
 type Peer = {
   id: string;
@@ -33,7 +33,11 @@ let p2pcf;
 
 let compoundKey = '';
 
-export const start = (clientId: string, roomId: string) => {
+export const start = async (clientId: string, roomId: string) => {
+  if (!browser) return;
+
+  const { default: P2PCF } = await import('p2pcf');
+
   if (!clientId || ! roomId) {
     if (p2pcf) p2pcf.destroy();
     return;
