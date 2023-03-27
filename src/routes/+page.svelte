@@ -66,7 +66,7 @@
 
     const observer = new IntersectionObserver(onIntersectionChange, {
       root: document.querySelector('.sectionsContainer'),   // default is the viewport
-      threshold: .7 // percentage of target's visible area. Triggers "onIntersection"
+      threshold: .49 // percentage of target's visible area. Triggers "onIntersection"
     })
 
     for (const section of document.querySelectorAll('.section')) {

@@ -20,25 +20,21 @@ export const typeLabel = (action: Action): string => {
     case ActionType.schedule:
       return "Schedule";
     case ActionType.uncomplete:
-      return "Mark incomplete";
+      return "Mark due";
     case ActionType.update:
-      return "Udate description";
+      return "Change";
     default:
       return `Unexpected action type ${action.type}`;
   }
 };
 
-const dateDisplayOptions: Intl.DateTimeFormatOptions = {
-  month: '2-digit',
-  day: '2-digit',
-  year: '2-digit',
+export const time: Intl.DateTimeFormatOptions = {
   hour: '2-digit',
   minute: '2-digit',
   second: '2-digit',
 };
 
-export const dateForDisplay = (date: number): string => new Date(date)
-  .toLocaleDateString(undefined, dateDisplayOptions);
+export const timeForDisplay = (date: number) => new Date(date).toLocaleTimeString(navigator.language, time);
 
 const historyStore = writable<Action[]>([]);
 
@@ -53,5 +49,9 @@ const history = {
     historyStore.update(lines => [...lines, line]);
   }
 };
+
+export const actionId = (action: Action) => action.id;
+
+export const actionDate = (action: Action) => new Date(action.timestamp).toISOString().split('T')[0];
 
 export default history;
