@@ -67,11 +67,13 @@
 
 <div id="sync-tasks" class="section">
   <h3>Sync Tasks</h3>
-  <button on:click|preventDefault={handleRequestId}>Generate connection ID</button>
-
-  <button on:click|preventDefault={copyConnectionId}>Copy connection id</button>
+  <div>
+    <button on:click|preventDefault={handleRequestId}>generate</button>
+    <button on:click|preventDefault={copyConnectionId}>copy</button>
+  </div>
   <!-- perform validations -->
-  <input pattern="^[a-zA-Z0-9_-]*$" size={37} bind:value={connectionId} on:input={handleConnectionIdInput} on:blur|preventDefault={onBlur}/>
+  <label for="connection-id">connection id</label>
+  <input id="connection-id" pattern="^[a-zA-Z0-9_-]*$" size={37} bind:value={connectionId} on:input={handleConnectionIdInput} on:blur|preventDefault={onBlur}/>
   {#if copied}
     <span transition:fade>Copied!</span>
   {/if}
@@ -84,7 +86,7 @@
   <input pattern="^[a-zA-Z0-9_-]*$" id="device-name" bind:value={deviceName} on:input={handleDeviceNameInput} on:blur|preventDefault={onBlur}/>
 
   <hr />
-  <span>Connected peers</span>
+  <span>Connected devices</span>
   {#if $state === "connected"}
     💚
   {:else if $state === "connecting"}
