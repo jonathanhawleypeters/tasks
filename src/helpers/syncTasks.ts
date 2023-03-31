@@ -52,6 +52,7 @@ let compoundKey = '';
 export const start = async (clientId: string, roomId: string, updateTasks: (tasks: Task[]) => void) => {
   if (!browser) return;
 
+  // replace with peer.js
   const { default: P2PCF } = await import('p2pcf');
 
   if (!clientId || ! roomId) {

@@ -23,7 +23,8 @@ export const initialize = (onSuccess: () => void, updateTasks: (tasks: Task[]) =
 
     historyRows((rows) => {
       history.initialize(rows);
-      initializeTasks(updateTasks)
+      // this was used to re-initialized tasks in the database
+      // mergeExternalActions([], updateTasks);
     })
   };
   
@@ -210,28 +211,6 @@ export const deleteTask = (createdAt: number) => {
     }
 }
 
-// schedule / update due date / unschedule task
-
-// introduce foreign actions and rebuild state
-
-export const initializeTasks = (updateTasks: (tasks: Task[]) => void) => {
-  const transaction = db?.transaction([HISTORY, TASKS], "readonly");
-  
-  if (!transaction) return;
-
-  const historyStore = transaction.objectStore(HISTORY);
-
-  const request = historyStore.getAll();
-
-  request.onsuccess = () => {
-    const actions: Action[] = request.result;
-
-    if (!actions || !actions.length) return;
-
-    mergeExternalActions(actions, updateTasks);
-  }
-}
-
 export const mergeExternalActions = (actions: Action[], updateTasks: (tasks: Task[]) => void) => {
   const transaction = db?.transaction([HISTORY, TASKS], "readwrite");
 
@@ -244,13 +223,19 @@ export const mergeExternalActions = (actions: Action[], updateTasks: (tasks: Tas
   let updatedActions: Action[] = [];
 
   const insertActions = () => {
-    actions.forEach(action => {
-      const request = historyStore.add(action)
-        // adding actions that already exist probably isn't succeeding
-        // need another way to track this
-      request.onsuccess = handleActionCount;
-      request.onerror = handleActionCount;
-    })
+    if (actions.length === 0) {
+      // a hack to rebuild tasks by passing an empty array of actions
+      addedActionsCount--;
+      handleActionCount();
+    } else {
+      actions.forEach(action => {
+        const request = historyStore.add(action)
+          // adding actions that already exist probably isn't succeeding
+          // need another way to track this
+        request.onsuccess = handleActionCount;
+        request.onerror = (error => console.error(error));
+      });
+    }
   };
 
   const handleActionCount = () => {
