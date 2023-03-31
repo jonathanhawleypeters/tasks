@@ -4,6 +4,10 @@
   import HistoryRow from './HistoryRow.svelte';
 
   $: taskHistory = groupBy($history, actionId);
+
+  const dateOptions = { weekday: "long", year: "numeric", month: "numeric", day: "numeric" };
+
+  const taskDescription = rows => rows.reduce((acc, row) => row.description ? row.description : acc, '');
 </script>
 
 <div id="history" class="section">
@@ -18,14 +22,14 @@
         <tr>
           <td colspan={3}>
             <h3>
-              {rows.reduce((acc, row) => row.description ? row.description : acc, '')}
+              {taskDescription(rows)}
             <h3>
           </td>
         </tr>
 
         <!-- grouping rows by date -->
         {#each Object.entries(groupBy(rows, actionDate)) as [date, rows]}
-          <td colspan={3}><i>{new Date(Date.parse(date)).toLocaleDateString()}</i></td>
+          <td colspan={3}><i>{new Date(Date.parse(date)).toLocaleDateString(undefined, dateOptions)}</i></td>
           {#each rows as row}
             <HistoryRow row={row} />
           {/each}
