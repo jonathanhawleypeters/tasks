@@ -2,6 +2,9 @@
   import { onMount } from 'svelte';
   import { fade } from 'svelte/transition';
   import { start, peers, state } from '../helpers/syncTasks';
+
+  export let updateTasks;
+
   let copied = false;
   // validate and escape deviceName and connectionId
   // persist this
@@ -33,7 +36,6 @@
 
     localStorage.setItem('connectionId', connectionId);
 
-    // persist connection id
   }
 
   const handleDeviceNameInput = (event) => {
@@ -57,7 +59,7 @@
       deviceName = storedDeviceName;
     }
 
-    start(deviceName, connectionId);
+    start(deviceName, connectionId, updateTasks);
   })
 
   const onBlur = () => {

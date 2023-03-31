@@ -8,7 +8,7 @@ const HISTORY = "history";
 
 const TASKS = "tasks";
 
-export const initialize = (onSuccess: () => void) => {
+export const initialize = (onSuccess: () => void, updateTasks: (tasks: Task[]) => void) => {
   const request = indexedDB.open("tasks", 1);
   
   request.onerror = (event) => {
@@ -23,6 +23,7 @@ export const initialize = (onSuccess: () => void) => {
 
     historyRows((rows) => {
       history.initialize(rows);
+      initializeTasks(updateTasks)
     })
   };
   
@@ -170,7 +171,7 @@ export const uncompleteTask = (createdAt: number) => {
           taskStore.put({
             ...task,
             completed: false,
-            completedAt: null,
+            completedAt: undefined,
           })
           .onsuccess = () => history.addLine(action);
         }
@@ -213,6 +214,125 @@ export const deleteTask = (createdAt: number) => {
 
 // introduce foreign actions and rebuild state
 
+export const initializeTasks = (updateTasks: (tasks: Task[]) => void) => {
+  const transaction = db?.transaction([HISTORY, TASKS], "readonly");
+  
+  if (!transaction) return;
+
+  const historyStore = transaction.objectStore(HISTORY);
+
+  const request = historyStore.getAll();
+
+  request.onsuccess = () => {
+    const actions: Action[] = request.result;
+
+    if (!actions || !actions.length) return;
+
+    mergeExternalActions(actions, updateTasks);
+  }
+}
+
+export const mergeExternalActions = (actions: Action[], updateTasks: (tasks: Task[]) => void) => {
+  const transaction = db?.transaction([HISTORY, TASKS], "readwrite");
+
+  if (!transaction) return;
+
+  const taskStore = transaction.objectStore(TASKS);
+  const historyStore = transaction.objectStore(HISTORY);
+  
+  let addedActionsCount = 0;
+  let updatedActions: Action[] = [];
+
+  const insertActions = () => {
+    actions.forEach(action => {
+      const request = historyStore.add(action)
+        // adding actions that already exist probably isn't succeeding
+        // need another way to track this
+      request.onsuccess = handleActionCount;
+      request.onerror = handleActionCount;
+    })
+  };
+
+  const handleActionCount = () => {
+    addedActionsCount++;
+
+    if (addedActionsCount !== actions.length) return;
+
+    // get all actions
+    const request = historyStore.getAll();
+
+    request
+      .onsuccess = () => {
+        updatedActions = request.result as Action[];
+        const tasks = new Map<number, Task>();
+
+        updatedActions.forEach(action => {
+          switch(action.type) {
+            case ActionType.add: {
+              tasks.set(action.id, {
+                description: action.description as string,
+                createdAt: action.id,
+                completed: false,
+              });
+              return;
+            }
+            case ActionType.update: {
+              tasks.set(action.id, {
+                ...tasks.get(action.id) as Task,
+                description: action.description as string,
+              });
+              return;
+            }
+            case ActionType.complete: {
+              tasks.set(action.id, {
+                ...tasks.get(action.id) as Task,
+                completedAt: action.timestamp,
+                completed: true,
+              });
+              return;
+            }
+            case ActionType.uncomplete: {
+              tasks.set(action.id, {
+                ...tasks.get(action.id) as Task,
+                completedAt: undefined,
+                completed: false,
+              });
+              return;
+            }
+            case ActionType.delete: {
+              tasks.delete(action.id);
+              return;
+            }
+            case ActionType.schedule: {
+              console.warn("scheduling tasks not implemented", action.id);
+              return;
+            }
+            default: {
+              console.error("unknown action type", action.type, action);
+              return;
+            }
+          }
+        });
+
+        const updatedTasks = Array.from(tasks.values());
+
+        updatedTasks
+          .forEach(task => {
+            taskStore.add(task);
+          });
+
+        history.initialize(updatedActions);
+        updateTasks(updatedTasks);
+      }
+    // build tasks out of actions
+  }
+
+  // avoid clearing taskstore unless necessary
+  // maybe it's just not
+  taskStore.clear()
+    .onsuccess = insertActions;
+}
+
 export const tasks = (resolve: (tasks: Task[]) => void) => {
   if (!db) return;
 
@@ -223,7 +343,7 @@ export const tasks = (resolve: (tasks: Task[]) => void) => {
     .onsuccess = (event) => resolve(event.target.result);
 }
 
-const historyRows = (resolve: (actions: Action[]) => void) => {
+export const historyRows = (resolve: (actions: Action[]) => void) => {
   if (!db) return;
 
   db.transaction([HISTORY], "readonly")

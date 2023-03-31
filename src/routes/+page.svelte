@@ -20,7 +20,9 @@
   
   let tasks = [];
 
-  const addTask = (task: Task) => tasks = [...tasks, task]; 
+  const addTask = (task: Task) => tasks = [...tasks, task];
+
+  const updateTasks = (updatedTasks: Task[]) => tasks = updatedTasks;
 
   const removeTask = (task: Task) => {
     tasks = tasks.filter((item) => item !== task);
@@ -51,7 +53,7 @@
       databaseTasks((dbTasks) => {
         tasks = dbTasks;
       });
-    });
+    }, updateTasks);
     // this is stupid, but svelte is broken, so...
     // https://github.com/sveltejs/kit/issues/4216#issuecomment-1067754638
     document.getElementById(location.hash.slice(1))?.scrollIntoView();
@@ -94,7 +96,7 @@
     />
     <History />
     <!-- <WebRTCdemo /> -->
-    <SyncTasks />
+    <SyncTasks updateTasks={updateTasks}/>
   </div>
 
 </main>

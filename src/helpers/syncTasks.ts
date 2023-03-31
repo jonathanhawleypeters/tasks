@@ -2,11 +2,27 @@
 // persist the WebRTC store using localstorage
 import { writable, get } from "svelte/store";
 import { browser } from '$app/environment';
+import { historyRows, mergeExternalActions } from './database';
+import type { Task } from "./types";
 
 type Peer = {
   id: string;
   client_id: string;
 }
+
+// peers send all their timestamps
+const TIMESTAMPS = "TIMESTAMPS";
+
+// peers reply with actions that are missing from the list of action timestamps
+const ACTIONS = "ACTIONS";
+
+const p2pcfOptions = {
+  workerUrl: "https://p2pcf.recipes-only.workers.dev/",
+  fastPollingRateMs: 2500, // 2.5 seconds
+  slowPollingRateMs: 6000, // 6 seconds
+  idlePollingAfterMs: 60000, // 1 minute
+  idlePollingRateMs: 300000, // 5 minutes
+};
 
 const peerState = writable<Peer[]>([]);
 
@@ -33,7 +49,7 @@ let p2pcf;
 
 let compoundKey = '';
 
-export const start = async (clientId: string, roomId: string) => {
+export const start = async (clientId: string, roomId: string, updateTasks: (tasks: Task[]) => void) => {
   if (!browser) return;
 
   const { default: P2PCF } = await import('p2pcf');
@@ -52,13 +68,42 @@ export const start = async (clientId: string, roomId: string) => {
     compoundKey = newKey;
   }
 
-  p2pcf = new P2PCF(clientId, roomId, { workerUrl: "https://p2pcf.recipes-only.workers.dev/" });
+  p2pcf = new P2PCF(clientId, roomId, p2pcfOptions);
   state.update(() => 'connecting');
 
   p2pcf.start();
 
   p2pcf.on('msg', (peer: Peer, data: ArrayBuffer) => {
-    console.log('message recieved', peer.id, peer.client_id, new TextDecoder("utf-8").decode(data));
+    try {
+      const decodedData = new TextDecoder("utf-8").decode(data);
+
+      const separatorIndex = decodedData.indexOf(':');
+
+      const type = decodedData.slice(0, separatorIndex);
+      const json = decodedData.slice(separatorIndex + 1);
+  
+      const payload = JSON.parse(json);
+  
+      console.log('message recieved', peer.id, peer.client_id, type, payload);
+
+      switch(type) {
+        case ACTIONS: {
+          if (!payload.length) return;
+          mergeExternalActions(payload, updateTasks);
+          return;
+        }
+        case TIMESTAMPS: {
+          handlePeerActions(peer, payload);
+          return;
+        }
+        default: {
+          console.error(`unknown message type ${type}`);
+        }
+      }
+
+    } catch (error) {
+      console.error(error);
+    }
   });
 
   p2pcf.on('peerclose', (peer: Peer) => {
@@ -77,7 +122,20 @@ export const start = async (clientId: string, roomId: string) => {
     peers.addPeer(peer);
     state.update(() => "connected");
 
-    p2pcf.send(peer, new TextEncoder().encode("hello"));
+    historyRows((actions) => {
+      p2pcf.send(peer, new TextEncoder().encode(`${TIMESTAMPS}:${JSON.stringify(actions.map(action => action.timestamp))}`));
+    });
+
   });
 };
+
+const handlePeerActions = (peer: Peer, timestamps: number[]) => {
+  const testSet = new Set(timestamps);
+
+  historyRows((actions) => {
+    const missingActions = actions.filter(action => !testSet.has(action.timestamp));
+
+    p2pcf?.send(peer, new TextEncoder().encode(`${ACTIONS}:${JSON.stringify(missingActions)}`));
+  });
+}
 
