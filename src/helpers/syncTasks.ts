@@ -130,7 +130,7 @@ export const peers = {
 
       const updatedState = state.filter(id => id !== peerId);
 
-      localStorage.setItem('peerIds', JSON.stringify(updatedState));
+      // though the connection closes, we should remember the peer in localstorage
 
       return updatedState;
     });
