@@ -2,12 +2,91 @@
 // persist the WebRTC store using localstorage
 import { writable, get } from "svelte/store";
 import { browser } from '$app/environment';
+import { type DataConnection, Peer } from 'peerjs';
 import { historyRows, mergeExternalActions } from './database';
 import type { Task } from "./types";
+import type { Action } from "./history";
 
-type Peer = {
-  id: string;
-  client_id: string;
+type ActionsPayload = {
+  type: typeof ACTIONS;
+  data: Action[]
+}
+
+type TimestampsPayload = {
+  type: typeof TIMESTAMPS;
+  data: number[]; // action timestamps
+}
+
+let id, peer: Peer;
+
+if (browser) {
+  id = localStorage.getItem('id');
+  
+  peer = id ? new Peer(id) : new Peer();
+  
+  peer.on("open", (identifier) => {
+    id = identifier;
+    localStorage.setItem('id', id);
+  });
+
+  peer.on("connection", (connection) => {
+    const peerId = connection.peer;
+
+    connection.on("open", () => {
+      peers.addPeer(peerId);
+
+      state.update(() => "connected");
+
+      historyRows((actions) => {
+        const payload: TimestampsPayload = {
+          type: TIMESTAMPS,
+          data: actions.map(action => action.timestamp),
+        };
+        connection.send(payload);
+      });
+    });
+
+    connection.on("data", (payload) => {
+      try {
+        if (!(
+          typeof payload === 'object'
+          && payload !== null
+          && 'type' in payload
+          && 'data' in payload
+          && typeof payload.type === 'string'
+          && Array.isArray(payload.data)
+        )) return;
+
+        switch(payload.type) {
+          case ACTIONS: {
+            if (!payload.data.length) return;
+            mergeExternalActions(payload.data as Action[], updateTasks);
+            return;
+          }
+          case TIMESTAMPS: {
+            handlePeerActions(connection, payload.data as number[]);
+            return;
+          }
+          default: {
+            console.error(`unknown payload type ${payload.type}`);
+          }
+        }
+
+      } catch (error) {
+        console.error(error);
+      }
+    });
+
+    connection.on("close", () => {
+      peers.removePeer(peerId);
+
+      const connected = get(peers).length !== 0;
+
+      if (!connected) {
+        state.update(() => "diconnected");
+      }
+    });
+  })
 }
 
 // peers send all their timestamps
@@ -16,25 +95,45 @@ const TIMESTAMPS = "TIMESTAMPS";
 // peers reply with actions that are missing from the list of action timestamps
 const ACTIONS = "ACTIONS";
 
-const p2pcfOptions = {
-  workerUrl: "https://p2pcf.recipes-only.workers.dev/",
-  fastPollingRateMs: 2500, // 2.5 seconds
-  slowPollingRateMs: 6000, // 6 seconds
-  idlePollingAfterMs: 60000, // 1 minute
-  idlePollingRateMs: 300000, // 5 minutes
-};
+let peerIds: string[] = [];
 
-const peerState = writable<Peer[]>([]);
+if (browser) {
+  const serializedPeerIds = localStorage.getItem('peerIds');
+
+  if (serializedPeerIds) {
+    const parsed = JSON.parse(serializedPeerIds);
+
+    peerIds = parsed;
+  }
+}
+
+const peerState = writable<string[]>(peerIds);
 
 export const peers = {
   subscribe: peerState.subscribe,
 
-  addPeer: (peer: Peer) => {
-    peerState.update((state) => [...state, peer]);
+  addPeer: (peerId: string) => {
+    peerState.update((state) => {
+      if (state.includes(peerId)) return state;
+
+      const updatedState = [...state, peerId];
+
+      localStorage.setItem('peerIds', JSON.stringify(updatedState));
+    
+      return updatedState;
+    });
   },
 
-  removePeer: (peer: Peer) => {
-    peerState.update((state) => state.filter(p => p !== peer));
+  removePeer: (peerId: string) => {
+    peerState.update((state) => {
+      if (!state.includes(peerId)) return state;
+
+      const updatedState = state.filter(id => id !== peerId);
+
+      localStorage.setItem('peerIds', JSON.stringify(updatedState));
+
+      return updatedState;
+    });
   }
 }
 
@@ -45,60 +144,50 @@ type State =
 
 export const state = writable<State>("diconnected");
 
-let p2pcf;
+export const connectToPeer = async (peerId: string, updateTasks: (tasks: Task[]) => void) => {
+  if (!peer) return;
 
-let compoundKey = '';
+  const connection = peer.connect(peerId);
 
-export const start = async (clientId: string, roomId: string, updateTasks: (tasks: Task[]) => void) => {
-  if (!browser) return;
-
-  // replace with peer.js
-  const { default: P2PCF } = await import('p2pcf');
-
-  if (!clientId || ! roomId) {
-    if (p2pcf) p2pcf.destroy();
-    return;
-  }
-
-  const newKey = `${clientId}-${roomId}`;
-
-  if (compoundKey === newKey) {
-    return;
-  } else {
-    if (p2pcf) p2pcf.destroy();
-    compoundKey = newKey;
-  }
-
-  p2pcf = new P2PCF(clientId, roomId, p2pcfOptions);
   state.update(() => 'connecting');
 
-  p2pcf.start();
+  connection.on("open", () => {
+    peers.addPeer(peerId);
 
-  p2pcf.on('msg', (peer: Peer, data: ArrayBuffer) => {
+    state.update(() => "connected");
+
+    historyRows((actions) => {
+      const payload: TimestampsPayload = {
+        type: TIMESTAMPS,
+        data: actions.map(action => action.timestamp),
+      };
+      connection.send(payload);
+    });
+  });
+
+  connection.on("data", (payload) => {
     try {
-      const decodedData = new TextDecoder("utf-8").decode(data);
+      if (!(
+        typeof payload === 'object'
+        && payload !== null
+        && 'type' in payload
+        && 'data' in payload
+        && typeof payload.type === 'string'
+        && Array.isArray(payload.data)
+      )) return;
 
-      const separatorIndex = decodedData.indexOf(':');
-
-      const type = decodedData.slice(0, separatorIndex);
-      const json = decodedData.slice(separatorIndex + 1);
-  
-      const payload = JSON.parse(json);
-  
-      console.log('message recieved', peer.id, peer.client_id, type, payload);
-
-      switch(type) {
+      switch(payload.type) {
         case ACTIONS: {
-          if (!payload.length) return;
-          mergeExternalActions(payload, updateTasks);
+          if (!payload.data.length) return;
+          mergeExternalActions(payload.data as Action[], updateTasks);
           return;
         }
         case TIMESTAMPS: {
-          handlePeerActions(peer, payload);
+          handlePeerActions(connection, payload.data as number[]);
           return;
         }
         default: {
-          console.error(`unknown message type ${type}`);
+          console.error(`unknown payload type ${payload.type}`);
         }
       }
 
@@ -107,8 +196,8 @@ export const start = async (clientId: string, roomId: string, updateTasks: (task
     }
   });
 
-  p2pcf.on('peerclose', (peer: Peer) => {
-    peers.removePeer(peer);
+  connection.on("close", () => {
+    peers.removePeer(peerId);
 
     const connected = get(peers).length !== 0;
 
@@ -116,27 +205,26 @@ export const start = async (clientId: string, roomId: string, updateTasks: (task
       state.update(() => "diconnected");
     }
   });
-
-  // find out if WebRTC properties are exposed by p2pcf
-  // so that the leading node can initiate syncing
-  p2pcf.on('peerconnect', (peer: Peer) => {
-    peers.addPeer(peer);
-    state.update(() => "connected");
-
-    historyRows((actions) => {
-      p2pcf.send(peer, new TextEncoder().encode(`${TIMESTAMPS}:${JSON.stringify(actions.map(action => action.timestamp))}`));
-    });
-
-  });
 };
 
-const handlePeerActions = (peer: Peer, timestamps: number[]) => {
+const handlePeerActions = (connection: DataConnection, timestamps: number[]) => {
   const testSet = new Set(timestamps);
 
   historyRows((actions) => {
     const missingActions = actions.filter(action => !testSet.has(action.timestamp));
 
-    p2pcf?.send(peer, new TextEncoder().encode(`${ACTIONS}:${JSON.stringify(missingActions)}`));
+    const payload: ActionsPayload = {
+      type: ACTIONS,
+      data: missingActions,
+    };
+
+    connection.send(payload);
   });
 }
 
+if (browser && peerIds.length) {
+  peerIds.forEach((peerId: string) => {
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
+    connectToPeer(peerId, () => {});
+  });
+}
