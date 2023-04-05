@@ -1,67 +1,33 @@
 <script lang="ts">
   import './page.css';
   import { onMount } from 'svelte';
-  import type { NewTask, Task } from '../helpers/types';
   import {
     initialize,
     tasks as databaseTasks,
-    completeTask as complete,
-    uncompleteTask as uncomplete,
-    deleteTask,
   } from '../helpers/database';
   import selectedView from '../helpers/selectedView';
+  import tasks from '../helpers/tasks';
   import Navigation from '../components/Navigation.svelte';
-  import AddTask from '../components/AddTask.svelte';
   import PendingTasks from '../components/PendingTasks.svelte';
   import CompltedTasks from '../components/CompletedTasks.svelte';
   import History from '../components/History.svelte';
-  import WebRTCdemo from '../components/WebRTCdemo.svelte';
   import SyncTasks from '../components/SyncTasks.svelte';
-  
-  let tasks = [];
-
-  const addTask = (task: Task) => tasks = [...tasks, task];
-
-  const updateTasks = (updatedTasks: Task[]) => tasks = updatedTasks;
-
-  const removeTask = (task: Task) => {
-    tasks = tasks.filter((item) => item !== task);
-    deleteTask(task.createdAt);
-  }
-
-  const completeTask = (task: Task) => {
-    task.completedAt = Date.now();
-    task.completed = true;
-
-    tasks = tasks;
-    
-    complete(task.createdAt);
-  };
-
-  const uncompleteTask = (task: Task) => {
-    delete task.completedAt;
-    task.completed = false; 
-  
-    tasks = tasks;
-
-    uncomplete(task.createdAt);
-  };
 
   onMount(() => {
     // initialize the database
     initialize(() => {
       databaseTasks((dbTasks) => {
-        tasks = dbTasks;
+        tasks.initialize(dbTasks);
       });
-    }, updateTasks);
+    });
     // this is stupid, but svelte is broken, so...
     // https://github.com/sveltejs/kit/issues/4216#issuecomment-1067754638
     document.getElementById(location.hash.slice(1))?.scrollIntoView();
 
-    function onIntersectionChange(sections) {
+    function onIntersectionChange(sections: IntersectionObserverEntry[]) {
       sections.forEach(section => {
         if (section.isIntersecting) {
-          selectedView.update(`#${section.target.id}`, 600);
+          selectedView.update(`#${section.target.id}`);
         }
       })
     }
@@ -83,20 +49,10 @@
   <Navigation />
 
   <div class="sections-container">
-    <PendingTasks
-      tasks={tasks}
-      completeTask={completeTask}
-      deleteTask={removeTask}
-      addTask={addTask}
-    />
-    <CompltedTasks
-      tasks={tasks}
-      uncompleteTask={uncompleteTask}
-      deleteTask={removeTask}
-    />
+    <PendingTasks />
+    <CompltedTasks />
     <History />
-    <!-- <WebRTCdemo /> -->
-    <SyncTasks updateTasks={updateTasks}/>
+    <SyncTasks />
   </div>
 
 </main>

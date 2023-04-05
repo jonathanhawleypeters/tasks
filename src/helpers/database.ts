@@ -1,4 +1,6 @@
 import history, { type Action } from './history';
+import tasksStore from './tasks';
+import syncState from './syncState';
 
 import { ActionType, type Task } from "./types";
 
@@ -8,7 +10,7 @@ const HISTORY = "history";
 
 const TASKS = "tasks";
 
-export const initialize = (onSuccess: () => void, updateTasks: (tasks: Task[]) => void) => {
+export const initialize = (onSuccess: () => void) => {
   const request = indexedDB.open("tasks", 1);
   
   request.onerror = (event) => {
@@ -211,10 +213,15 @@ export const deleteTask = (createdAt: number) => {
     }
 }
 
-export const mergeExternalActions = (actions: Action[], updateTasks: (tasks: Task[]) => void) => {
+export const mergeExternalActions = (actions: Action[]) => {
   const transaction = db?.transaction([HISTORY, TASKS], "readwrite");
 
   if (!transaction) return;
+
+  transaction.onerror = () => {
+    // is this enough to catch everything?
+    syncState.update(() => ({ status: "errored", errorMessage: transaction.error?.message }))
+  }
 
   const taskStore = transaction.objectStore(TASKS);
   const historyStore = transaction.objectStore(HISTORY);
@@ -233,7 +240,6 @@ export const mergeExternalActions = (actions: Action[], updateTasks: (tasks: Tas
           // adding actions that already exist probably isn't succeeding
           // need another way to track this
         request.onsuccess = handleActionCount;
-        request.onerror = (error => console.error(error));
       });
     }
   };
@@ -307,7 +313,9 @@ export const mergeExternalActions = (actions: Action[], updateTasks: (tasks: Tas
           });
 
         history.initialize(updatedActions);
-        updateTasks(updatedTasks);
+        tasksStore.initialize(updatedTasks);
+        syncState.update(() => ({ status: "finished" }))
+        // update task store
       }
     // build tasks out of actions
   }

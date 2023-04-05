@@ -1,12 +1,12 @@
 <script lang="ts">
   import { addTask as addTaskToDatabase } from '../helpers/database';
-  import { ActionType, type Task } from '../helpers/types';
+  import type { Task } from '../helpers/types';
+  import tasks from '../helpers/tasks';
 
-  export let addTask: (task: Task) => void;
-
-  let task: NewTask = {
+  let task: Task = {
     description: '',
     createdAt: 0,
+    completed: false,
   };
 
   const submitTask = () => {
@@ -18,8 +18,9 @@
     task = {
       description: '',
       createdAt: 0,
+      completed: false,
     };
-    addTask(newTask);
+    tasks.addTask(newTask);
     addTaskToDatabase(newTask.description);
   }
 </script>

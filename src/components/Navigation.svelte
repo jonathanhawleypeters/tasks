@@ -25,15 +25,15 @@
 		on:click|preventDefault={handleSelectView}>Tasks</a
 	>
 	<a
-		class:selected={$selectedView === '#completed-tasks'}
-		href="#completed-tasks"
+		class:selected={$selectedView === '#completed'}
+		href="#completed"
 		on:click|preventDefault={handleSelectView}>Completed</a
 	>
 	<a class:selected={$selectedView === '#history'} href="#history" on:click|preventDefault={handleSelectView}
 		>History</a
 	>
-	<a class:selected={$selectedView === '#sync-tasks'} href="#sync-tasks" on:click|preventDefault={handleSelectView}
-		>Sync Tasks</a
+	<a class:selected={$selectedView === '#sync'} href="#sync" on:click|preventDefault={handleSelectView}
+		>Sync</a
 	>
 	<!-- <a class:selected={$selectedView === '#web-rtc-test'} href="#web-rtc-test" on:click|preventDefault={handleSelectView}
 		>WebRTC test</a

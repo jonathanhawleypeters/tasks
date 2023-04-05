@@ -1,16 +1,20 @@
 <script lang="ts">
   import { fade } from 'svelte/transition';
-  import type { Task, UncompleteTask, DeleteTask } from '../helpers/types';
   import Description from './Description.svelte';
+  import tasks from '../helpers/tasks';
+  import type { Task } from '../helpers/types';
 
   export let task: Task;
-  export let checkAction: CompleteTask | UncompleteTask;
-  export let deleteTask: DeleteTask;
 </script>
 
 <div style="display: flex;" class="task" transition:fade>
-  <input title={task.completed ? "Undo complete task" : "Complete task"} checked={task.completed} on:change="{() => checkAction(task)}" type="checkbox">
-  <botton title="Delete task" type="button" class="remove-button" on:click={() => deleteTask(task)} on:keypress={() => deleteTask(task)}>🗑️</botton>
+  <input 
+    title={task.completed ? "Undo complete task" : "Complete task"}
+    checked={task.completed}
+    on:change="{() => task.completed ? tasks.uncompleteTask(task) : tasks.completeTask(task)}"
+    type="checkbox"
+  />
+  <botton title="Delete task" type="button" class="remove-button" on:click={() => tasks.removeTask(task)} on:keypress={() => tasks.removeTask(task)}>🗑️</botton>
   <Description task={task} /> 
 </div>
 

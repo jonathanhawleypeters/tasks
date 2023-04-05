@@ -1,11 +1,8 @@
-// Store up all these peers and messages
-// persist the WebRTC store using localstorage
-import { writable, get } from "svelte/store";
 import { browser } from '$app/environment';
 import { type DataConnection, Peer } from 'peerjs';
 import { historyRows, mergeExternalActions } from './database';
-import type { Task } from "./types";
 import type { Action } from "./history";
+import syncState from './syncState';
 
 type ActionsPayload = {
   type: typeof ACTIONS;
@@ -17,76 +14,38 @@ type TimestampsPayload = {
   data: number[]; // action timestamps
 }
 
-let id, peer: Peer;
+// const peerJSOptions = { config: {
+//   iceServers: [
+//     { urls: "stun:stun.l.google.com:19302" },
+//     { urls: "turn:0.peerjs.com:3478", username: "peerjs", credential: "peerjsp" }
+//   ],
+//   sdpSemantics: "unified-plan",
+//   iceTransportPolicy: "relay", // <- it means using only relay server (our free turn server in this case)
+// }};
 
-if (browser) {
-  id = localStorage.getItem('id');
+const onConnection = (connection: DataConnection) => {
+
+  connection.on("open", onOpen(connection));
+
+  connection.on("data", onData(connection));
+};
+
+export const startPeerConnection = () => {
+  if (browser) {
+    syncState.update(() => ({ status: "seeking" }));
+    
+    const peer = new Peer();
   
-  peer = id ? new Peer(id) : new Peer();
-  
-  peer.on("open", (identifier) => {
-    id = identifier;
-    localStorage.setItem('id', id);
-  });
+    peer.on("error", (e) => syncState.update(() => ({ status: "errored", errorMessage: String(e) })));
 
-  peer.on("connection", (connection) => {
-    const peerId = connection.peer;
-
-    connection.on("open", () => {
-      peers.addPeer(peerId);
-
-      state.update(() => "connected");
-
-      historyRows((actions) => {
-        const payload: TimestampsPayload = {
-          type: TIMESTAMPS,
-          data: actions.map(action => action.timestamp),
-        };
-        connection.send(payload);
-      });
+    peer.on("open", (id) => {
+      syncState.update(() => ({ status: "identified", peerId: id }));
     });
 
-    connection.on("data", (payload) => {
-      try {
-        if (!(
-          typeof payload === 'object'
-          && payload !== null
-          && 'type' in payload
-          && 'data' in payload
-          && typeof payload.type === 'string'
-          && Array.isArray(payload.data)
-        )) return;
+    peer.on("connection", onConnection);
 
-        switch(payload.type) {
-          case ACTIONS: {
-            if (!payload.data.length) return;
-            mergeExternalActions(payload.data as Action[], updateTasks);
-            return;
-          }
-          case TIMESTAMPS: {
-            handlePeerActions(connection, payload.data as number[]);
-            return;
-          }
-          default: {
-            console.error(`unknown payload type ${payload.type}`);
-          }
-        }
-
-      } catch (error) {
-        console.error(error);
-      }
-    });
-
-    connection.on("close", () => {
-      peers.removePeer(peerId);
-
-      const connected = get(peers).length !== 0;
-
-      if (!connected) {
-        state.update(() => "diconnected");
-      }
-    });
-  })
+    return peer;
+  }
 }
 
 // peers send all their timestamps
@@ -95,116 +54,24 @@ const TIMESTAMPS = "TIMESTAMPS";
 // peers reply with actions that are missing from the list of action timestamps
 const ACTIONS = "ACTIONS";
 
-let peerIds: string[] = [];
 
-if (browser) {
-  const serializedPeerIds = localStorage.getItem('peerIds');
-
-  if (serializedPeerIds) {
-    const parsed = JSON.parse(serializedPeerIds);
-
-    peerIds = parsed;
-  }
+const onOpen = (connection: DataConnection) => () => {
+  console.log("connected!!!", connection);
+  historyRows((actions) => {
+    const payload: TimestampsPayload = {
+      type: TIMESTAMPS,
+      data: actions.map(action => action.timestamp),
+    };
+    connection.send(payload);
+  });
 }
 
-const peerState = writable<string[]>(peerIds);
-
-export const peers = {
-  subscribe: peerState.subscribe,
-
-  addPeer: (peerId: string) => {
-    peerState.update((state) => {
-      if (state.includes(peerId)) return state;
-
-      const updatedState = [...state, peerId];
-
-      localStorage.setItem('peerIds', JSON.stringify(updatedState));
-    
-      return updatedState;
-    });
-  },
-
-  removePeer: (peerId: string) => {
-    peerState.update((state) => {
-      if (!state.includes(peerId)) return state;
-
-      const updatedState = state.filter(id => id !== peerId);
-
-      // though the connection closes, we should remember the peer in localstorage
-
-      return updatedState;
-    });
-  }
-}
-
-type State =
- | "diconnected"
- | "connecting"
- | "connected"
-
-export const state = writable<State>("diconnected");
-
-export const connectToPeer = async (peerId: string, updateTasks: (tasks: Task[]) => void) => {
-  if (!peer) return;
-
+export const connectToPeer = (peer: Peer, peerId: string) => {
   const connection = peer.connect(peerId);
+  
+  connection.on("open", onOpen(connection));
 
-  state.update(() => 'connecting');
-
-  connection.on("open", () => {
-    peers.addPeer(peerId);
-
-    state.update(() => "connected");
-
-    historyRows((actions) => {
-      const payload: TimestampsPayload = {
-        type: TIMESTAMPS,
-        data: actions.map(action => action.timestamp),
-      };
-      connection.send(payload);
-    });
-  });
-
-  connection.on("data", (payload) => {
-    try {
-      if (!(
-        typeof payload === 'object'
-        && payload !== null
-        && 'type' in payload
-        && 'data' in payload
-        && typeof payload.type === 'string'
-        && Array.isArray(payload.data)
-      )) return;
-
-      switch(payload.type) {
-        case ACTIONS: {
-          if (!payload.data.length) return;
-          mergeExternalActions(payload.data as Action[], updateTasks);
-          return;
-        }
-        case TIMESTAMPS: {
-          handlePeerActions(connection, payload.data as number[]);
-          return;
-        }
-        default: {
-          console.error(`unknown payload type ${payload.type}`);
-        }
-      }
-
-    } catch (error) {
-      console.error(error);
-    }
-  });
-
-  connection.on("close", () => {
-    peers.removePeer(peerId);
-
-    const connected = get(peers).length !== 0;
-
-    if (!connected) {
-      state.update(() => "diconnected");
-    }
-  });
+  connection.on("data", onData(connection));
 };
 
 const handlePeerActions = (connection: DataConnection, timestamps: number[]) => {
@@ -219,12 +86,45 @@ const handlePeerActions = (connection: DataConnection, timestamps: number[]) => 
     };
 
     connection.send(payload);
+
+    syncState.update(() => ({ status: "connected", sent: missingActions.length }))
   });
 }
 
-if (browser && peerIds.length) {
-  peerIds.forEach((peerId: string) => {
-    // eslint-disable-next-line @typescript-eslint/no-empty-function
-    connectToPeer(peerId, () => {});
-  });
-}
+const onData = (connection: DataConnection) => (payload: unknown) => {
+  try {
+    // refine type
+    if (!(
+      typeof payload === 'object'
+      && payload !== null
+      && 'type' in payload
+      && 'data' in payload
+      && typeof payload.type === 'string'
+      && Array.isArray(payload.data)
+    )) return;
+
+    switch(payload.type) {
+      case ACTIONS: {
+        const actions = payload.data as Action[];
+
+        syncState.update(() => ({ status: "connected", recieved: actions.length }));
+
+        if (!actions.length) return;
+        mergeExternalActions(actions);
+        return;
+      }
+      case TIMESTAMPS: {
+        syncState.update(() => ({ status: "connected" }));
+
+        handlePeerActions(connection, payload.data as number[]);
+        return;
+      }
+      default: {
+        syncState.update(() => ({ status: "errored", errorMessage: `unknown payload type ${payload.type}` }));
+      }
+    }
+
+  } catch (error) {
+    syncState.update(() => ({ status: 'errored', errorMessage: String(error) }));
+  }
+};

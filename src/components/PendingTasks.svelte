@@ -1,23 +1,14 @@
 <script lang="ts">
-	import type { CompleteTask, DeleteTask, Task } from '../helpers/types';
   import AddTask from './AddTask.svelte';
   import Task from './Task.svelte';
-
-  export let tasks: Task[];
-  export let completeTask: CompleteTask;
-  export let deleteTask: DeleteTask;
-  export let addTask: (task: Task) => void;
+  import tasks from '../helpers/tasks';
 </script>
 
 <div id="current-tasks" class="section">
-  <AddTask addTask={addTask} />
-  {#each tasks as task}
+  <AddTask />
+  {#each $tasks as task}
     {#if !task.completed}
-      <Task
-        task={task}
-        checkAction={completeTask}
-        deleteTask={deleteTask}
-      />
+      <Task task={task} />
     {/if}
   {/each}
 </div>
