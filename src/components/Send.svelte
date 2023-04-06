@@ -1,8 +1,27 @@
 <script lang="ts">
   import { fade } from 'svelte/transition';
+  import QRCode from 'qrcode';
   import syncState from '../helpers/syncState';
 
   let copied = false;
+
+  let QRcodeCanvas: HTMLCanvasElement | undefined;
+
+  const renderQRCode = () => {
+    if (!$syncState.peerId) return;
+
+    QRCode.toCanvas(
+      QRcodeCanvas,
+      $syncState.peerId,
+      { scale: 3, errorCorrectionLevel: 'H' },
+      (error: unknown) => {
+        if (!error) return;
+        syncState.update(() => ({ status: "errored", errorMessage: String(error) }))
+      }
+    );
+  }
+
+  $: $syncState, renderQRCode();
 
   const copyConnectionId = () => {
     try {
@@ -26,7 +45,12 @@
 <div>
   <button disabled={!$syncState.peerId} on:click|preventDefault={copyConnectionId}>copy</button>
 </div>
-{#if $syncState.peerId}<p>id {$syncState.peerId}</p>{/if}
-{#if copied}
-  <span transition:fade>Copied!</span>
-{/if}
+<div>
+  {#if $syncState.peerId}
+    <p>id {$syncState.peerId}</p>
+    {/if}
+  {#if copied}
+    <span transition:fade>Copied!</span>
+  {/if}
+</div>
+<canvas bind:this={QRcodeCanvas} style="width: 100px" />
