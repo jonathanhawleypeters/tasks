@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { onMount } from "svelte";
+	import { initialize } from "../helpers/navigation";
 	import selectedView from '../helpers/selectedView';
 
 	function handleSelectView({ target }) {
@@ -8,14 +9,8 @@
 		selectedView.update(href);
 	}
 
-	onMount(() => {
-		selectedView.update(location.hash);
-		window.addEventListener('hashchange', () => {
-			const id = (location.hash || "#current-tasks").slice(1);
-
-			document.getElementById(id)?.scrollIntoView();
-		});
-	});
+	// initialize returns a cleanup callback to onmount
+	onMount(() => initialize());
 </script>
 
 <nav>
