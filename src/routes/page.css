@@ -12,16 +12,10 @@ nav a, h3, thead td {
   font-family: 'Iowan Old Style', 'Palatino Linotype', 'URW Palladio L', P052, serif;
 }
 
-html {
-  height: 100%;
-}
-
 body {
   color: #333;
   background: lightgoldenrodyellow;
-  /* 16px is supposed to compensate for  */
   margin: 0px;
-  min-height: 100vh;
 }
 
 .sections-container {
