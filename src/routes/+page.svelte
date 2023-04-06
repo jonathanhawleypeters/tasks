@@ -26,4 +26,5 @@
   <History />
   <SyncTasks />
 </div>
+<br />
 <a href="/about">about</a>

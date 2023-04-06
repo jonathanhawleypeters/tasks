@@ -22,26 +22,30 @@
     {/each}
   {/if}
   {#if lastWeek}
-    <h3>Within the last seven days</h3>
-    {#each $tasks as task}
-      {#if task.completed && task.completedAt && lastWeekExcludingToday(task.completedAt)}
-        <Task task={task} />
-      {/if}
-    {/each}
+    <details open>
+      <summary><h3>Within the last seven days</h3></summary>
+      {#each $tasks as task}
+        {#if task.completed && task.completedAt && lastWeekExcludingToday(task.completedAt)}
+          <Task task={task} />
+        {/if}
+      {/each}
+    </details>
   {/if}
   {#if older}
-    <h3>Older</h3>
-    {#each $tasks as task}
-      {#if task.completed && task.completedAt && beforeLastWeek(task.completedAt)}
-        <Task task={task} />
-      {/if}
-    {/each}
+    <details>
+      <summary><h3>Older</h3></summary>
+      {#each $tasks as task}
+        {#if task.completed && task.completedAt && beforeLastWeek(task.completedAt)}
+          <Task task={task} />
+        {/if}
+      {/each}
+    </details>
   {/if}
 </div>
 
 <style>
   h3 {
-    display: block;
+    display: inline-block;
     font-size: 1em;
     margin-block-start: 0.5em;
     margin-block-end: 0.2em;
