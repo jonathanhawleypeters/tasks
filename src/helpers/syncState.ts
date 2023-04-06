@@ -1,7 +1,7 @@
 import { writable } from "svelte/store";
 
 type SyncState = {
-  status: "awaiting user action" | "contacting peer server" | "id generated" | "connected" | "finished" | "errored";
+  status: "awaiting user action" | "contacting peer server" | "id generated" | "awaiting peer id" | "connected" | "finished" | "errored";
   peerId?: string;
   sent?: number;
   recieved?: number;

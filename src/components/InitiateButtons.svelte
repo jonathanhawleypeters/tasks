@@ -24,6 +24,7 @@
     }
     setPeer(newPeer);
     setMode("recieve");
+    syncState.update(() => ({ status: "awaiting peer id" }));
   };
 </script>
 

@@ -30,11 +30,14 @@
 <p>In addition to the core ideas, Tasks was born of the desire to learn about:</p>
 
 <ol>
-  <li><a href="https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps">PWAs</a>: a technology that can help websites work offline</li>
+  <li><a href="https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps">PWAs</a>: a group of technologies that can help websites work offline</li>
   <li><a href="https://developer.mozilla.org/en-US/docs/Web/API/indexedDB">indexedDB</a>: a database widely supported in web browsers</li>
   <li><a href="https://developer.mozilla.org/en-US/docs/Glossary/WebRTC">WebRTC</a>: a P2P technology that allows direct connections between two devices</li>
 </ol>
 
 <p>The "sync only when you choose" feature also requires a way to reconcile actions, like completing or editing a task, taken on separate devices during overlapping time periods. To solve this, Tasks takes a simplified, <a href="https://crdt.tech/">CRDT</a> (Conflict-free Replicated Data Type) -inspired approach.</p>
+
+<br />
+<br />
 
 <!-- describe how actions are used for syncing and rebuilding state -->

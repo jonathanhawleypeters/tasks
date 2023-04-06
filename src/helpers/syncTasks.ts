@@ -30,7 +30,7 @@ export const startPeerConnection = () => {
     peer.on("error", (e) => syncState.update(() => ({ status: "errored", errorMessage: String(e) })));
 
     peer.on("open", (id) => {
-      syncState.update(() => ({ status: "id generated", peerId: id }));
+      syncState.update((state) => (state.status === "awaiting peer id" ? state : { status: "id generated", peerId: id }));
     });
 
     peer.on("connection", onConnection);
