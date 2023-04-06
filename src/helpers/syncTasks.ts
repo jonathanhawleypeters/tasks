@@ -14,15 +14,6 @@ type TimestampsPayload = {
   data: number[]; // action timestamps
 }
 
-// const peerJSOptions = { config: {
-//   iceServers: [
-//     { urls: "stun:stun.l.google.com:19302" },
-//     { urls: "turn:0.peerjs.com:3478", username: "peerjs", credential: "peerjsp" }
-//   ],
-//   sdpSemantics: "unified-plan",
-//   iceTransportPolicy: "relay", // <- it means using only relay server (our free turn server in this case)
-// }};
-
 const onConnection = (connection: DataConnection) => {
 
   connection.on("open", onOpen(connection));
@@ -32,14 +23,14 @@ const onConnection = (connection: DataConnection) => {
 
 export const startPeerConnection = () => {
   if (browser) {
-    syncState.update(() => ({ status: "seeking" }));
+    syncState.update(() => ({ status: "contacting peer server" }));
     
     const peer = new Peer();
   
     peer.on("error", (e) => syncState.update(() => ({ status: "errored", errorMessage: String(e) })));
 
     peer.on("open", (id) => {
-      syncState.update(() => ({ status: "identified", peerId: id }));
+      syncState.update(() => ({ status: "id generated", peerId: id }));
     });
 
     peer.on("connection", onConnection);
@@ -56,7 +47,6 @@ const ACTIONS = "ACTIONS";
 
 
 const onOpen = (connection: DataConnection) => () => {
-  console.log("connected!!!", connection);
   historyRows((actions) => {
     const payload: TimestampsPayload = {
       type: TIMESTAMPS,

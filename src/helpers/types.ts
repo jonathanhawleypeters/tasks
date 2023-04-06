@@ -30,3 +30,5 @@ type TaskEventHandler = (task: Task) => void;
 export type CompleteTask = TaskEventHandler;
 export type UncompleteTask = TaskEventHandler;
 export type DeleteTask = TaskEventHandler;
+
+export type SyncMode = "send" | "recieve" | null;
