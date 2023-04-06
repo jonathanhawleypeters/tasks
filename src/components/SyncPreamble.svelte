@@ -4,7 +4,6 @@
   export let mode: SyncMode;
 </script>
 
-<h3>Sync</h3>
 {#if mode === null}
   <p>
     Two devices can sync task data. Syncing is always initiated manually. Devices do not store the information used to make the connection through refreshing the page.
