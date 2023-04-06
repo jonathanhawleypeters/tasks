@@ -30,9 +30,6 @@
 	<a class:selected={$selectedView === '#sync'} href="#sync" on:click|preventDefault={handleSelectView}
 		>Sync</a
 	>
-	<!-- <a class:selected={$selectedView === '#web-rtc-test'} href="#web-rtc-test" on:click|preventDefault={handleSelectView}
-		>WebRTC test</a
-	> -->
 </nav>
 
 <style>
