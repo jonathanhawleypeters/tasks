@@ -7,7 +7,7 @@
   export let task: Task;
 </script>
 
-<div style="display: flex;" class="task" transition:fade>
+<div style="display: flex;" class="task" transition:fade|local>
   <input 
     title={task.completed ? "Undo complete task" : "Complete task"}
     checked={task.completed}

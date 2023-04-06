@@ -50,7 +50,7 @@
     <p>id {$syncState.peerId}</p>
     {/if}
   {#if copied}
-    <span transition:fade>Copied!</span>
+    <span transition:fade|local>Copied!</span>
   {/if}
 </div>
 <canvas bind:this={QRcodeCanvas} style="width: 100px" />
