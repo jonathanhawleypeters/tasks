@@ -6,7 +6,7 @@
   "start_url": "https://tasks.pages.dev/",
   "name": "Tasks",
   "short_name": "Tasks",
-  "description": "A simple, installable, offline, todo list. No sign-up. No ads.",
+  "description": "A simple to-do list that works offline and (manually) syncs across devices",
   "orientation": "portrait",
   "icons": [
     {

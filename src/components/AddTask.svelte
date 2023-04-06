@@ -10,6 +10,7 @@
   };
 
   const submitTask = () => {
+    if (task.description.trim() === '') return;
     const createdAt = Date.now();
     const newTask = {
       ...task,
@@ -28,7 +29,7 @@
 <form id="add-task" on:submit|preventDefault={submitTask}>
   
   <input bind:value={task.description} id="add-task-field" type="text" />
-  <button disabled={task.description === ''} on:click={submitTask}><label for="add-task-field" >Add task</label></button>
+  <button disabled={task.description.trim() === ''} on:click={submitTask}><label for="add-task-field" >Add task</label></button>
 </form>
 
 <style>

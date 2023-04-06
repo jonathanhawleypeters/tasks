@@ -5,7 +5,6 @@
     initialize,
     tasks as databaseTasks,
   } from '../helpers/database';
-  import selectedView from '../helpers/selectedView';
   import tasks from '../helpers/tasks';
   import Navigation from '../components/Navigation.svelte';
   import PendingTasks from '../components/PendingTasks.svelte';

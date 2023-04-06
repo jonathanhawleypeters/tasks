@@ -42,7 +42,6 @@ export const initialize = (onSuccess: () => void) => {
   };
 }
 
-// add task
 export const addTask = (description: string) => {
   const id = Date.now();
 
@@ -73,8 +72,6 @@ export const addTask = (description: string) => {
     .add(action)
     .onsuccess = insertTask;
 };
-
-// update description
 
 export const updateDescription = (createdAt: number, description: string) => {  
   const transaction = db?.transaction([HISTORY, TASKS], "readwrite");
@@ -108,8 +105,6 @@ export const updateDescription = (createdAt: number, description: string) => {
         }
     }
 }
-
-// complete task
 
 export const completeTask = (createdAt: number) => {
   const transaction = db?.transaction([HISTORY, TASKS], "readwrite");
@@ -145,8 +140,6 @@ export const completeTask = (createdAt: number) => {
     }
 }
 
-// un-complete task
-
 export const uncompleteTask = (createdAt: number) => {
   const transaction = db?.transaction([HISTORY, TASKS], "readwrite");
 
@@ -180,8 +173,6 @@ export const uncompleteTask = (createdAt: number) => {
         }
     }
 }
-
-// delete task
 
 export const deleteTask = (createdAt: number) => {
   const transaction = db?.transaction([HISTORY, TASKS], "readwrite");
@@ -315,13 +306,9 @@ export const mergeExternalActions = (actions: Action[]) => {
         history.initialize(updatedActions);
         tasksStore.initialize(updatedTasks);
         syncState.update(() => ({ status: "finished" }))
-        // update task store
       }
-    // build tasks out of actions
   }
 
-  // avoid clearing taskstore unless necessary
-  // maybe it's just not
   taskStore.clear()
     .onsuccess = insertActions;
 }
