@@ -24,7 +24,7 @@
     <!-- display input for code, QR scanner -->
     <Recieve peer={peer} />
   {:else} <!-- null -->
-    <InitiateButtons peer={peer} setMode={setMode} setPeer={setPeer} />
+    <InitiateButtons setMode={setMode} setPeer={setPeer} />
   {/if}
   <SyncStatus mode={mode} setMode={setMode} />
 </div>
