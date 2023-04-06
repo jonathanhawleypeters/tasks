@@ -4,7 +4,6 @@
   import { startPeerConnection } from '../helpers/syncTasks';
 	import type { SyncMode } from '../helpers/types';
 
-  export let peer: Peer | undefined;
   export let setPeer: (peer: Peer | undefined) => void;
   export let setMode: (mode: SyncMode) => void;
 

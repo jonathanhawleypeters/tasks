@@ -17,7 +17,7 @@
 </script>
 
 <div id="sync" class="section">
-  <SyncPreamble />
+  <SyncPreamble mode={mode} />
   {#if mode === 'send'}
     <Send />
   {:else if mode === "recieve"}

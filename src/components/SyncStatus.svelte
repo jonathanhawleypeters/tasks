@@ -13,9 +13,7 @@
 
 {#if mode !== null}
   <h3>Status</h3>
-  {$syncState.status}
-{/if}
-{#if $syncState.status === "finished" || $syncState.status === "errored"}
+  <p>{$syncState.status}</p>
   <button on:click|preventDefault={handleReset}>Reset</button>
 {/if}
 {#if $syncState.status === "errored"}

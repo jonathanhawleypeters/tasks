@@ -13,7 +13,7 @@
     QRCode.toCanvas(
       QRcodeCanvas,
       $syncState.peerId,
-      { scale: 3, errorCorrectionLevel: 'H' },
+      { scale: 6, errorCorrectionLevel: 'H' },
       (error: unknown) => {
         if (!error) return;
         syncState.update(() => ({ status: "errored", errorMessage: String(error) }))
