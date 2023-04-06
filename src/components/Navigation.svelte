@@ -14,28 +14,44 @@
 </script>
 
 <nav>
-	<a
-		class:selected={$selectedView === '#current-tasks'}
-		href="#current-tasks"
-		on:click|preventDefault={handleSelectView}>Tasks</a
-	>
-	<a
-		class:selected={$selectedView === '#completed'}
-		href="#completed"
-		on:click|preventDefault={handleSelectView}>Completed</a
-	>
-	<a class:selected={$selectedView === '#history'} href="#history" on:click|preventDefault={handleSelectView}
-		>History</a
-	>
-	<a class:selected={$selectedView === '#sync'} href="#sync" on:click|preventDefault={handleSelectView}
-		>Sync</a
-	>
+	<ol>
+		<li>
+			<a
+				class:selected={$selectedView === '#current-tasks'}
+				href="#current-tasks"
+				on:click|preventDefault={handleSelectView}>Tasks</a
+			>
+		</li>
+		<li>
+			<a
+				class:selected={$selectedView === '#completed'}
+				href="#completed"
+				on:click|preventDefault={handleSelectView}>Completed</a
+			>
+		</li>
+		<li>
+			<a class:selected={$selectedView === '#history'} href="#history" on:click|preventDefault={handleSelectView}
+				>History</a
+			>
+		</li>
+		<li>
+			<a class:selected={$selectedView === '#sync'} href="#sync" on:click|preventDefault={handleSelectView}
+				>Sync</a
+			>
+		</li>
+	</ol>
 </nav>
 
 <style>
   nav {
     margin-bottom: 16px;
   }
+	nav ol {
+		padding: 0;
+		display: flex;
+		list-style: none;
+		gap: 8px;
+	}
 	a {
 		font-size: 1.2rem;
 		text-decoration: none;
