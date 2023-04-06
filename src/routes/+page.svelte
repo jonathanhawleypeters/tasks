@@ -15,15 +15,13 @@
 
   onMount(() => {
     // initialize the database
-    initialize(() => {
-      databaseTasks((dbTasks) => {
-        tasks.initialize(dbTasks);
-      });
-    });
+    initialize(() => databaseTasks((dbTasks) => tasks.initialize(dbTasks)));
+
     // this is stupid, but svelte is broken, so...
     // https://github.com/sveltejs/kit/issues/4216#issuecomment-1067754638
     document.getElementById(location.hash.slice(1))?.scrollIntoView();
 
+    // move intersection stuff into a helper
     function onIntersectionChange(sections: IntersectionObserverEntry[]) {
       sections.forEach(section => {
         if (section.isIntersecting) {

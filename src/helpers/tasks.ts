@@ -1,8 +1,6 @@
 import { writable } from "svelte/store";
 
 import {
-  initialize,
-  tasks as databaseTasks,
   completeTask as complete,
   uncompleteTask as uncomplete,
   deleteTask,
