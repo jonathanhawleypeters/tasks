@@ -1,5 +1,4 @@
 <script lang="ts">
-  import './page.css';
   import { onMount } from 'svelte';
   import {
     initialize,
@@ -18,27 +17,13 @@
   });
 </script>
 
-<main>
-  <Navigation />
 
-  <div class="sections-container">
-    <PendingTasks />
-    <CompltedTasks />
-    <History />
-    <SyncTasks />
-  </div>
+<Navigation />
 
-</main>
-
-<style>
-  main {
-    padding: 16px;
-    width: var(--section-width);
-    max-width: 95vw;
-    /* 48px is double the main padding + the navigation's margin bottom */
-    height: calc(100vh - 48px);
-    display: flex;
-    flex-direction: column;
-    margin: 0 auto;
-  }
-</style>
+<div class="sections-container">
+  <PendingTasks />
+  <CompltedTasks />
+  <History />
+  <SyncTasks />
+</div>
+<a href="/about">about</a>
