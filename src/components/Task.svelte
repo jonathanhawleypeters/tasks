@@ -19,6 +19,9 @@
 </div>
 
 <style>
+  input {
+    height: 20px;
+  }
   .task {
     display: flex;
     gap: 10px;

@@ -34,14 +34,6 @@
 </div>
 
 <style>
-  input {
-    all: unset;
-  }
-  p {
-    cursor: pointer;
-    margin-block-end: 0;
-    margin-block-start: 0;
-  }
   .saveExplanation {
     color: gray;
   }
