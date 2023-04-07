@@ -4,7 +4,8 @@
   import HistoryRow from './HistoryRow.svelte';
 	import { dateForDisplay } from '../helpers/dates';
   import type { Action } from '../helpers/types';
-	import { downloadHistory } from '../helpers/downloads';
+	import { downloadHistory } from '../helpers/backup';
+	import BackupInput from './BackupInput.svelte';
 
   $: taskHistory = groupBy($history, actionId);
 
@@ -13,6 +14,7 @@
 
 <div id="history" class="section">
   <button on:click|preventDefault={() => downloadHistory()}>download backup</button>
+  <BackupInput />
   <table>
     <thead>
       <td>Kind</td>

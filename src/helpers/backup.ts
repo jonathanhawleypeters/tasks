@@ -42,4 +42,4 @@ const download = (text: string) => {
 
 export const downloadHistory = () => historyRows((rows: Action[]) => {
   download(`${rows.map(actionRow).join('\n')}\n`);
-})
+});
