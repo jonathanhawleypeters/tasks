@@ -40,6 +40,34 @@ const download = (text: string) => {
   link.remove();
 };
 
+const tableHeader = "action type | id | timestamp | description"
+
+const backupHeader = `This is a backup (version 1) file for a Tasks app
+
+It can be used at https://tasks.pages.dev/ by going to History and
+using the "restore backup" option.
+
+The contents are a list of actions taken to enter, modify and complete tasks.
+
+There are five kinds of actions, each represented in this file as a single letter:
+A add a task
+C mark a task completed
+I mark a completed task incomplete
+U update the description text
+D delete a task
+
+There are timestamps that look something like this 1679629908719.
+They represent a date and time as a number of milliseconds since 1970, UTC.
+
+Task ids are the timestamp from when a task was first added.
+This means every add action should have the same value for id and timestamp.
+Updates to a task have the same id and a later timestamp.
+
+Only add and update actions have description text.
+
+${tableHeader}
+`
+
 export const downloadHistory = () => historyRows((rows: Action[]) => {
-  download(`${rows.map(actionRow).join('\n')}\n`);
+  download(`${backupHeader}\n${rows.map(actionRow).join('\n')}\n`);
 });
