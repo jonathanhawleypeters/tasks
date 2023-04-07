@@ -28,14 +28,6 @@ export const typeLabel = (action: Action): string => {
   }
 };
 
-export const time: Intl.DateTimeFormatOptions = {
-  hour: '2-digit',
-  minute: '2-digit',
-  second: '2-digit',
-};
-
-export const timeForDisplay = (date: number) => new Date(date).toLocaleTimeString(navigator.language, time);
-
 const historyStore = writable<Action[]>([]);
 
 const history = {

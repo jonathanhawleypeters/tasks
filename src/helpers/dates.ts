@@ -24,3 +24,22 @@ export const lastWeekExcludingToday = (date: number): boolean => {
 export const beforeLastWeek = (date: number): boolean => {
   return !isWithinOffsetDays(date, -7);
 }
+
+const timeFormatOptions: Intl.DateTimeFormatOptions = {
+  hour: '2-digit',
+  minute: '2-digit',
+  second: '2-digit',
+};
+
+export const timeForDisplay = (date: Date) => date
+  .toLocaleTimeString(navigator.language, timeFormatOptions);
+
+const dateOptions: Intl.DateTimeFormatOptions = {
+  weekday: "long",
+  year: "numeric",
+  month: "numeric",
+  day: "numeric"
+};
+
+export const dateForDisplay = (date: Date): string => date
+  .toLocaleDateString(navigator.language, dateOptions)

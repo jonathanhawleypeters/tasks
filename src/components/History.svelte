@@ -2,10 +2,9 @@
   import groupBy from 'lodash/groupBy';
   import history, { actionId, actionDate } from '../helpers/history';
   import HistoryRow from './HistoryRow.svelte';
+	import { dateForDisplay } from '../helpers/dates';
 
   $: taskHistory = groupBy($history, actionId);
-
-  const dateOptions = { weekday: "long", year: "numeric", month: "numeric", day: "numeric" };
 
   const taskDescription = rows => rows.reduce((acc, row) => row.description ? row.description : acc, '');
 </script>
@@ -29,7 +28,7 @@
 
         <!-- grouping rows by date -->
         {#each Object.entries(groupBy(rows, actionDate)) as [date, rows]}
-          <td colspan={3}><i>{new Date(Date.parse(date)).toLocaleDateString(undefined, dateOptions)}</i></td>
+          <td colspan={3}><i>{dateForDisplay(new Date(Date.parse(date)))}</i></td>
           {#each rows as row}
             <HistoryRow row={row} />
           {/each}

@@ -1,5 +1,6 @@
 <script lang="ts">
-  import  { typeLabel, timeForDisplay, type Action } from '../helpers/history';
+  import  { typeLabel, type Action } from '../helpers/history';
+  import { timeForDisplay } from '../helpers/dates';
   import { ActionType } from '../helpers/types';
   export let row: Action;
   
@@ -8,7 +9,7 @@
 
 <tr>
   <td>{label}</td>
-  <td>{timeForDisplay(row.timestamp)}</td>
+  <td>{timeForDisplay(new Date(row.timestamp))}</td>
   {#if row.type === ActionType.add || row.type === ActionType.update}
     <td>{row.description}</td>
   {:else}
