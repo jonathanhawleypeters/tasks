@@ -11,7 +11,10 @@
 
   let peer: Peer | undefined;
 
-  const setPeer = (p: typeof peer) => peer = p;
+  const setPeer = (p?: typeof peer) => {
+    if (!p && peer) peer.destroy(); 
+    peer = p
+  };
 
   const setMode = (m: SyncMode) => mode = m;
 </script>
@@ -21,10 +24,9 @@
   {#if mode === 'send'}
     <Send />
   {:else if mode === "recieve"}
-    <!-- display input for code, QR scanner -->
     <Recieve peer={peer} />
   {:else} <!-- null -->
     <InitiateButtons setMode={setMode} setPeer={setPeer} />
   {/if}
-  <SyncStatus mode={mode} setMode={setMode} />
+  <SyncStatus mode={mode} setMode={setMode} setPeer={setPeer} />
 </div>
