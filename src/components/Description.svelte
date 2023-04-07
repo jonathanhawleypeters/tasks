@@ -7,7 +7,11 @@
   let updatedDescription = task.description;
   let input: HTMLDivElement;
   
-  const onUpdateDescription = (event: KeyboardEvent) => {
+  const handleKeyDown = (event: KeyboardEvent) => {
+    if (event.key === '|') {
+      event.preventDefault();
+      return;
+    }
     if (!(event.key === 'Enter')) return;
 
     event.preventDefault();
@@ -17,15 +21,16 @@
   }
 
   const handleInput = () => {
-    updatedDescription = input?.textContent || '';
+    updatedDescription = (input?.textContent || '').replaceAll('|', '');
   }
 </script>
 
 <div>
+  <!-- validate and remove | characters -->
   <div 
     contenteditable
     title="Task description, click to edit"
-    on:keydown={onUpdateDescription}
+    on:keydown={handleKeyDown}
     on:input|preventDefault={handleInput}
     bind:this={input}
     bind:textContent={updatedDescription}

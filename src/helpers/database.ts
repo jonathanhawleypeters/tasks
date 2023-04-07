@@ -42,6 +42,7 @@ export const initialize = (onSuccess: () => void) => {
   };
 }
 
+// check description for | characters and remove
 export const addTask = (description: string) => {
   const id = Date.now();
 
@@ -73,6 +74,7 @@ export const addTask = (description: string) => {
     .onsuccess = insertTask;
 };
 
+// check description for | characters and remove
 export const updateDescription = (createdAt: number, description: string) => {  
   const transaction = db?.transaction([HISTORY, TASKS], "readwrite");
 
