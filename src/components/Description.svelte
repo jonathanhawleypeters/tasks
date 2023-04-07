@@ -4,25 +4,33 @@
 
   export let task: Task;
 
-  let editing = false;
   let updatedDescription = task.description;
-  const onEdit = () => editing = true;
-  const onCancelEdit = () => editing = false;
-  const onUpdateDescription = () => {
+  let input: HTMLDivElement;
+  
+  const onUpdateDescription = (event: KeyboardEvent) => {
+    if (!(event.key === 'Enter')) return;
+
+    event.preventDefault();
+
     task.description = updatedDescription;
-    editing = false;
     updateDescription(task.createdAt, updatedDescription);
+  }
+
+  const handleInput = () => {
+    updatedDescription = input?.textContent || '';
   }
 </script>
 
 <div>
-  {#if editing}
-    <form on:submit={onUpdateDescription} >
-      <input size={updatedDescription.length} autofocus type="text" bind:value={updatedDescription} on:blur={onCancelEdit}/>
-    </form>
-  {:else}
-    <div title="Task description, click to edit" on:click={onEdit} on:keypress={onEdit}><p>{task.description}</p></div>
-  {/if}
+  <div 
+    contenteditable
+    title="Task description, click to edit"
+    on:keydown={onUpdateDescription}
+    on:input|preventDefault={handleInput}
+    bind:this={input}
+    bind:textContent={updatedDescription}
+  />
+  <div class="saveExplanation" hidden={updatedDescription === task.description}>press enter / return key to save</div>
 </div>
 
 <style>
@@ -33,5 +41,8 @@
     cursor: pointer;
     margin-block-end: 0;
     margin-block-start: 0;
+  }
+  .saveExplanation {
+    color: gray;
   }
 </style>
