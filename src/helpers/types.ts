@@ -17,6 +17,13 @@ export enum ActionType {
   delete = 'D', // delete a task
 }
 
+export type Action = {
+  type: ActionType;
+  timestamp: number;
+  id: number;
+  description?: string;
+}
+
 export type TaskAction = {
   type: ActionType;
   description?: string;

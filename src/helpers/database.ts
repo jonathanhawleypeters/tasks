@@ -1,8 +1,8 @@
-import history, { type Action } from './history';
+import history from './history';
 import tasksStore from './tasks';
 import syncState from './syncState';
 
-import { ActionType, type Task } from "./types";
+import { type Action, ActionType, type Task } from "./types";
 
 let db: IDBDatabase | void;
 

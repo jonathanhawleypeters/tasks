@@ -3,10 +3,11 @@
   import history, { actionId, actionDate } from '../helpers/history';
   import HistoryRow from './HistoryRow.svelte';
 	import { dateForDisplay } from '../helpers/dates';
+  import type { Action } from '../helpers/types';
 
   $: taskHistory = groupBy($history, actionId);
 
-  const taskDescription = rows => rows.reduce((acc, row) => row.description ? row.description : acc, '');
+  const taskDescription = (rows: Action[]) => rows.reduce((acc, row) => row.description ? row.description : acc, '');
 </script>
 
 <div id="history" class="section">
@@ -16,18 +17,18 @@
       <td>Time</td>
       <td>Description</td>
     </thead>
-    {#each Object.entries(taskHistory) as [group, rows]}
+    {#each Object.values(taskHistory) as task}
       <tbody>
         <tr>
           <td colspan={3}>
             <h3>
-              {taskDescription(rows)}
+              {taskDescription(task)}
             <h3>
           </td>
         </tr>
 
         <!-- grouping rows by date -->
-        {#each Object.entries(groupBy(rows, actionDate)) as [date, rows]}
+        {#each Object.entries(groupBy(task, actionDate)) as [date, rows]}
           <td colspan={3}><i>{dateForDisplay(new Date(Date.parse(date)))}</i></td>
           {#each rows as row}
             <HistoryRow row={row} />

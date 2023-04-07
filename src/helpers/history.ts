@@ -1,13 +1,6 @@
 import { writable } from "svelte/store";
 
-import { ActionType } from "./types";
-
-export type Action = {
-  type: ActionType;
-  timestamp: number;
-  id: number;
-  description?: string;
-}
+import { type Action, ActionType } from "./types";
 
 export const typeLabel = (action: Action): string => {
   switch(action.type) {
