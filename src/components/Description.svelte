@@ -21,12 +21,11 @@
   }
 
   const handleInput = () => {
-    updatedDescription = (input?.textContent || '').replaceAll('|', '');
+    updatedDescription = (input?.textContent || '');
   }
 </script>
 
 <div>
-  <!-- validate and remove | characters -->
   <div 
     contenteditable
     title="Task description, click to edit"
