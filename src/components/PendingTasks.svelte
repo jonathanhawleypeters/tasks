@@ -6,7 +6,7 @@
 
 <div id="current-tasks" class="section">
   <AddTask />
-  {#each $tasks as task}
+  {#each $tasks as task (task.createdAt)}
     {#if !task.completed}
       <Task task={task} />
     {/if}

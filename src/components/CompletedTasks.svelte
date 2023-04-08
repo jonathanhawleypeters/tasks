@@ -15,7 +15,7 @@
   {/if}
   {#if today}
     <h3>Today</h3>
-    {#each $tasks as task}
+    {#each $tasks as task (task.createdAt)}
       {#if task.completed && task.completedAt && isToday(task.completedAt)}
         <Task task={task} />
       {/if}
@@ -24,7 +24,7 @@
   {#if lastWeek}
     <details open>
       <summary><h3>Within the last seven days</h3></summary>
-      {#each $tasks as task}
+      {#each $tasks as task (task.createdAt)}
         {#if task.completed && task.completedAt && lastWeekExcludingToday(task.completedAt)}
           <Task task={task} />
         {/if}
@@ -34,7 +34,7 @@
   {#if older}
     <details>
       <summary><h3>Older</h3></summary>
-      {#each $tasks as task}
+      {#each $tasks as task (task.createdAt)}
         {#if task.completed && task.completedAt && beforeLastWeek(task.completedAt)}
           <Task task={task} />
         {/if}
