@@ -2,10 +2,12 @@
 	import type Peer from 'peerjs';
   import Send from './Send.svelte';
 	import Recieve from './Recieve.svelte';
+	import SyncPreamble from './SyncPreamble.svelte';
+  import BackupInput from './BackupInput.svelte';
 	import InitiateButtons from './InitiateButtons.svelte';
 	import SyncStatus from './SyncStatus.svelte';
 	import type { SyncMode } from '../helpers/types';
-	import SyncPreamble from './SyncPreamble.svelte';
+  import { downloadHistory } from '../helpers/backup';
 
   let mode: SyncMode = null;
 
@@ -19,7 +21,13 @@
   const setMode = (m: SyncMode) => mode = m;
 </script>
 
-<div id="sync" class="section">
+<div id="data" class="section">
+  <h2>Backup</h2>
+  <p>Your task data can be downloaded as a text file.</p>
+  <button on:click|preventDefault={() => downloadHistory()}>download backup</button>
+  <p>One or more of the text files above can be restored.</p>
+  <BackupInput />
+  <h2>Sync</h2>
   <SyncPreamble mode={mode} />
   {#if mode === 'send'}
     <Send />

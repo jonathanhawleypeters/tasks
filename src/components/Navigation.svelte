@@ -35,8 +35,8 @@
 			>
 		</li>
 		<li>
-			<a class:selected={$selectedView === '#sync'} href="#sync" on:click|preventDefault={handleSelectView}
-				>Sync</a
+			<a class:selected={$selectedView === '#data'} href="#data" on:click|preventDefault={handleSelectView}
+				>Data</a
 			>
 		</li>
 		<li>

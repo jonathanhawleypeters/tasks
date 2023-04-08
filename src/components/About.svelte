@@ -2,9 +2,9 @@
   <p>Tasks is a mock-up, based a few ideas</p>
   
   <ol>
-    <li>people should own their data</li>
-    <li>applications should work offline</li>
-    <li>using simple tools like this one should not require registering with an organization, or entering contractual agreements</li>
+    <li>people should own their data in practice</li>
+    <li>application features that can, should work offline</li>
+    <li>using simple tools like this one should not require registering with an organization, or entering contractual agreements. You don't have to jump through those hoops to use a pen and paper.</li>
   </ol>
   
   <p>To reflect this, Tasks works differently from most apps and websites</p>
@@ -12,14 +12,14 @@
   <ol>
     <li>there is no sign up process, username or password</li>
     <li>data is stored locally and synced only when the user decides, by making a short-lived network connection between two devices</li>
-    <li>the application works offline</li>
+    <li>the application works offline (except syncing), including backing up and restoring data</li>
   </ol>
   
   <p>The first two items are tradeoffs:</p>
   
   <ol>
-    <li><p>Nobody has to log in to use the application, and the data is not encrypted at rest. In those senses, the app isn't very secure. But also, data isn't aggregated in one place where it is more likely to be sold or stolen in bulk.</p></li>
-    <li><p>The manual syncing trades control for convenience.</p></li>
+    <li><p>Lack of username and password means anybody who walks up can see and edit tasks</p></li>
+    <li><p>The manual syncing is not as convenient as syncing it through a server that stores a copy.</p></li>
   </ol>
   
   <h2>How it works</h2>

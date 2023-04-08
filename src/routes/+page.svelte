@@ -9,7 +9,7 @@
   import PendingTasks from '../components/PendingTasks.svelte';
   import CompltedTasks from '../components/CompletedTasks.svelte';
   import History from '../components/History.svelte';
-  import SyncTasks from '../components/SyncTasks.svelte';
+  import Data from '../components/Data.svelte';
 	import About from '../components/About.svelte';
 
   onMount(() => {
@@ -25,7 +25,7 @@
   <PendingTasks />
   <CompltedTasks />
   <History />
-  <SyncTasks />
+  <Data />
   <About />
 </div>
 <br />
