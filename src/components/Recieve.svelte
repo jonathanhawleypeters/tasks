@@ -3,7 +3,6 @@
   import { Html5QrcodeScanner } from "html5-qrcode"
 	import { onMount } from 'svelte';
   import { connectToPeer } from '../helpers/syncTasks';
-	import syncState from '../helpers/syncState';
 
   export let peer: Peer | undefined;
 
