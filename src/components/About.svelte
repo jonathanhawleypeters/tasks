@@ -18,8 +18,8 @@
   <p>The first two items are tradeoffs:</p>
   
   <ol>
-    <li><p>Lack of username and password means anybody who walks up can see and edit tasks</p></li>
-    <li><p>The manual syncing is not as convenient as syncing it through a server that stores a copy.</p></li>
+    <li>Lack of username and password means anybody who walks up can see and edit tasks</li>
+    <li>The manual syncing is not as convenient as syncing it through a server that stores a copy.</li>
   </ol>
   
   <h2>How it works</h2>
