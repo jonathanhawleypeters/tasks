@@ -25,7 +25,7 @@
   <h2>Backup</h2>
   <p>Your task data can be downloaded as a text file.</p>
   <button on:click|preventDefault={() => downloadHistory()}>download backup</button>
-  <p>One or more of the text files above can be restored.</p>
+  <p>One or more Tasks backup files can be restored.</p>
   <BackupInput />
   <h2>Sync</h2>
   <SyncPreamble mode={mode} />
