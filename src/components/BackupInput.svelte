@@ -14,7 +14,7 @@
   }
 </script>
 
-<label for="restore-backup">restore backups</label>
 <form bind:this={form}>
+  <label for="restore-backup">restore backups</label>
   <input id="restore-backup" bind:this={input} on:change={handleChange} type="file" accept=".txt" multiple />
 </form>
