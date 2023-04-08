@@ -48,9 +48,6 @@
 </nav>
 
 <style>
-  nav {
-    margin-bottom: 16px;
-  }
 	nav ol {
 		padding: 0;
 		display: flex;

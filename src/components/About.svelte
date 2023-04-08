@@ -19,7 +19,7 @@
   
   <ol>
     <li>Lack of username and password means anybody who walks up can see and edit tasks</li>
-    <li>The manual syncing is not as convenient as syncing it through a server that stores a copy.</li>
+    <li>The manual syncing is far less convenient than automatically syncing through a server that stores a copy.</li>
   </ol>
   
   <h2>How it works</h2>
