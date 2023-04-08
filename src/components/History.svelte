@@ -53,7 +53,6 @@
     color: #444;
   }
   tbody tr td {
-    position: sticky;
     top: 24px;
     background-color: lightgoldenrodyellow; 
   }
