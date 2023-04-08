@@ -9,11 +9,8 @@
 
   let foreignId = '';
 
-  const handleForeignIdSubmit = () => {
-    if (!peer || !foreignId) return;
-    connectToPeer(peer, foreignId);
-    foreignId = '';
-  };
+  let handleForeignIdSubmit: () => void;
+
 
   onMount(() => {
     const html5QrcodeScanner = new Html5QrcodeScanner(
@@ -21,6 +18,17 @@
       { fps: 5, qrbox: {width: 250, height: 250} },
       false, /* verbose= */ 
     );
+
+    handleForeignIdSubmit = () => {
+      if (!peer || !foreignId) return;
+
+      // once a scan succeeds, stop scanning
+      html5QrcodeScanner.clear();
+
+      connectToPeer(peer, foreignId);
+      foreignId = '';
+    };
+
     html5QrcodeScanner.render((decodedText) => {
       foreignId = decodedText;
       handleForeignIdSubmit();
@@ -28,7 +36,8 @@
     (error) => {
       console.warn(error);
 
-      // these errors aren't always fatal
+      // these errors are often that nothing was detected
+      // in one frame of scanning
     });
   });
 </script>
