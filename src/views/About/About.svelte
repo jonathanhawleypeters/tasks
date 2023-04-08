@@ -4,15 +4,15 @@
   <ol>
     <li>people should own their data in practice</li>
     <li>application features that can, should work offline</li>
-    <li>using simple tools like this one should not require registering with an organization, or entering contractual agreements. You don't have to jump through those hoops to use a pen and paper.</li>
+    <li>using simple tools like this one should not require registering</li>
   </ol>
   
   <p>To reflect this, Tasks works differently from most apps and websites</p>
   
   <ol>
     <li>there is no sign up process, username or password</li>
-    <li>data is stored locally and synced only when the user decides, by making a short-lived network connection between two devices</li>
-    <li>the application works offline (except syncing), including backing up and restoring data</li>
+    <li>data is stored locally and synced only to the user's other devices, when they decide. The sync feature requires a network connection and WebRTC support.</li>
+    <li>the application works offline, including backing up and restoring data.</li>
   </ol>
   
   <p>The first two items are tradeoffs:</p>
@@ -34,8 +34,28 @@
   
   <p>The "sync only when you choose" feature also requires a way to reconcile actions, like completing or editing a task, taken on separate devices during overlapping time periods. To solve this, Tasks takes a simplified, <a href="https://crdt.tech/">CRDT</a> (Conflict-free Replicated Data Type) -inspired approach.</p>
   
-  <br />
-  <br />
+  <h2>License</h2>
+  <div id="license">
+    <p>Copyright (c) 2023 Jonathan Hawley-Peters</p>
+
+    <p>Permission is hereby granted, free of charge, to any person obtaining a copy
+    of this software and associated documentation files (the "Software"), to deal
+    in the Software without restriction, including without limitation the rights
+    to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+    copies of the Software, and to permit persons to whom the Software is
+    furnished to do so, subject to the following conditions:</p>
+
+    <p>The above copyright notice and this permission notice shall be included in all
+    copies or substantial portions of the Software.</p>
+
+    <p>THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+    AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+    SOFTWARE.</p>
+  </div>
   
   <!-- describe how actions are used for syncing and rebuilding state -->
 </div>
