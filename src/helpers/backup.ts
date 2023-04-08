@@ -116,6 +116,7 @@ export const mergeBackupFileActions = (files: FileList) => {
         reader.onload = function() {
           const contents = reader.result;
 
+          // typescript refinement because it doesn't see readAsText
           if (!(typeof contents === 'string')) return;
 
           if (!backupTextValid(contents)) {

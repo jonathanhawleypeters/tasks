@@ -39,6 +39,11 @@
 				>Sync</a
 			>
 		</li>
+		<li>
+			<a class:selected={$selectedView === '#about'} href="#about" on:click|preventDefault={handleSelectView}
+				>About</a
+			>
+		</li>
 	</ol>
 </nav>
 

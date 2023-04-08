@@ -11,7 +11,7 @@
 
 <div id="completed" class="section">
   {#if none}
-    No completed tasks to display
+    <p>Completed tasks can be viewed here.</p>
   {/if}
   {#if today}
     <h3>Today</h3>

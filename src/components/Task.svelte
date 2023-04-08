@@ -14,7 +14,13 @@
     on:change="{() => task.completed ? tasks.uncompleteTask(task) : tasks.completeTask(task)}"
     type="checkbox"
   />
-  <botton title="Delete task" type="button" class="remove-button" on:click={() => tasks.removeTask(task)} on:keypress={() => tasks.removeTask(task)}>🗑️</botton>
+  <botton
+    title="Delete task"
+    type="button"
+    class="remove-button"
+    on:click|preventDefault={() => tasks.removeTask(task)}
+    on:keypress|preventDefault={() => tasks.removeTask(task)}
+  >🗑️</botton>
   <Description task={task} /> 
 </div>
 

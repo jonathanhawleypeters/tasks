@@ -10,6 +10,7 @@
   import CompltedTasks from '../components/CompletedTasks.svelte';
   import History from '../components/History.svelte';
   import SyncTasks from '../components/SyncTasks.svelte';
+	import About from '../components/About.svelte';
 
   onMount(() => {
     // initialize the database
@@ -25,6 +26,6 @@
   <CompltedTasks />
   <History />
   <SyncTasks />
+  <About />
 </div>
 <br />
-<a href="/about">about</a>
