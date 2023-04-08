@@ -3,11 +3,10 @@
   import Send from './Send.svelte';
 	import Recieve from './Recieve.svelte';
 	import SyncPreamble from './SyncPreamble.svelte';
-  import BackupInput from './BackupInput.svelte';
 	import InitiateButtons from './InitiateButtons.svelte';
 	import SyncStatus from './SyncStatus.svelte';
-	import type { SyncMode } from '../helpers/types';
-  import { downloadHistory } from '../helpers/backup';
+	import type { SyncMode } from '../../helpers/types';
+	import Backup from './Backup.svelte';
 
   let mode: SyncMode = null;
 
@@ -23,10 +22,7 @@
 
 <div id="data" class="section">
   <h2>Backup</h2>
-  <p>Your task data can be downloaded as a text file.</p>
-  <button on:click|preventDefault={() => downloadHistory()}>download backup</button>
-  <p>One or more Tasks backup files can be restored.</p>
-  <BackupInput />
+  <Backup />
   <h2>Sync</h2>
   <SyncPreamble mode={mode} />
   {#if mode === 'send'}

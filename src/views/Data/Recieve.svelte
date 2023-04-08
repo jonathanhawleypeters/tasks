@@ -2,7 +2,7 @@
   import type Peer from 'peerjs';
   import { Html5QrcodeScanner } from "html5-qrcode"
 	import { onMount } from 'svelte';
-  import { connectToPeer } from '../helpers/syncTasks';
+  import { connectToPeer } from '../../helpers/syncTasks';
 
   export let peer: Peer | undefined;
 

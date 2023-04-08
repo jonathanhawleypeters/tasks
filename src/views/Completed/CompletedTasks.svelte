@@ -1,7 +1,7 @@
 <script lang="ts">
-  import Task from './Task.svelte';
-  import tasks from '../helpers/tasks';
-  import { isToday, lastWeekExcludingToday, beforeLastWeek } from '../helpers/dates';
+  import Task from '../../components/Task.svelte';
+  import tasks from '../../helpers/tasks';
+  import { isToday, lastWeekExcludingToday, beforeLastWeek } from '../../helpers/dates';
 
   $: none = !$tasks.some(task => task.completed);
   $: today = $tasks.some(task => task.completed && task.completedAt && isToday(task.completedAt));

@@ -1,7 +1,7 @@
 <script lang="ts">
   import { fade } from 'svelte/transition';
   import QRCode from 'qrcode';
-  import syncState from '../helpers/syncState';
+  import syncState from '../../helpers/syncState';
 
   let copied = false;
 

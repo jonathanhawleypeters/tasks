@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { mergeBackupFileActions } from "../helpers/backup";
+	import { mergeBackupFileActions } from "../../helpers/backup";
 
   let input: HTMLInputElement;
 

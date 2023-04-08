@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type Peer from 'peerjs';
-  import syncState from '../helpers/syncState';
-	import type { SyncMode } from '../helpers/types';
+  import syncState from '../../helpers/syncState';
+	import type { SyncMode } from '../../helpers/types';
 
   export let mode: SyncMode;
   export let setMode: (mode: SyncMode) => void;

@@ -1,7 +1,7 @@
 <script lang="ts">
-  import  { typeLabel } from '../helpers/history';
-  import { timeForDisplay } from '../helpers/dates';
-  import { type Action, ActionType } from '../helpers/types';
+  import  { typeLabel } from '../../helpers/history';
+  import { timeForDisplay } from '../../helpers/dates';
+  import { type Action, ActionType } from '../../helpers/types';
   export let row: Action;
   
   const label = typeLabel(row);

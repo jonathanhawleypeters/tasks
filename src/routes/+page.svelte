@@ -6,11 +6,11 @@
   } from '../helpers/database';
   import tasks from '../helpers/tasks';
   import Navigation from '../components/Navigation.svelte';
-  import PendingTasks from '../components/PendingTasks.svelte';
-  import CompltedTasks from '../components/CompletedTasks.svelte';
-  import History from '../components/History.svelte';
-  import Data from '../components/Data.svelte';
-	import About from '../components/About.svelte';
+  import PendingTasks from '../views/Tasks/PendingTasks.svelte';
+  import CompltedTasks from '../views/Completed/CompletedTasks.svelte';
+  import History from '../views/History/History.svelte';
+  import Data from '../views/Data/Data.svelte';
+	import About from '../views/About/About.svelte';
 
   onMount(() => {
     // initialize the database

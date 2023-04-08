@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { SyncMode } from "../helpers/types";
+	import type { SyncMode } from "../../helpers/types";
 
   export let mode: SyncMode;
 </script>

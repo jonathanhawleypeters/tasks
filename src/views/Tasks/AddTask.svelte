@@ -1,7 +1,7 @@
 <script lang="ts">
-  import { addTask as addTaskToDatabase } from '../helpers/database';
-  import type { Task } from '../helpers/types';
-  import tasks from '../helpers/tasks';
+  import { addTask as addTaskToDatabase } from '../../helpers/database';
+  import type { Task } from '../../helpers/types';
+  import tasks from '../../helpers/tasks';
 
   let task: Task = {
     description: '',

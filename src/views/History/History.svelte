@@ -1,9 +1,9 @@
 <script lang="ts">
   import groupBy from 'lodash/groupBy';
-  import history, { actionId, actionDate } from '../helpers/history';
+  import history, { actionId, actionDate } from '../../helpers/history';
   import HistoryRow from './HistoryRow.svelte';
-	import { dateForDisplay } from '../helpers/dates';
-  import type { Action } from '../helpers/types';
+	import { dateForDisplay } from '../../helpers/dates';
+  import type { Action } from '../../helpers/types';
 
   $: taskHistory = groupBy($history, actionId);
 

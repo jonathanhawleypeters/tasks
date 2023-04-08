@@ -1,7 +1,7 @@
 <script lang="ts">
   import AddTask from './AddTask.svelte';
-  import Task from './Task.svelte';
-  import tasks from '../helpers/tasks';
+  import Task from '../../components/Task.svelte';
+  import tasks from '../../helpers/tasks';
 </script>
 
 <div id="current-tasks" class="section">
