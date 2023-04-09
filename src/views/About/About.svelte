@@ -1,39 +1,38 @@
 <div id="about" class="section">
-  <p>Tasks is a mock-up, based a few ideas</p>
-  
+  <p>Tasks is a proof-of-concept. The primary guiding principle is that the user retains possession of their data at all times.</p>
+
+  <h2>Features</h2>
+
   <ol>
-    <li>people should own their data in practice</li>
-    <li>application features that can, should work offline</li>
-    <li>using simple tools like this one should not require registering</li>
+    <li>works offline</li>
+    <li>text file backups</li>
+    <li>syncing between two devices</li>
+    <li>no login or sign up</li>
   </ol>
-  
-  <p>To reflect this, Tasks works differently from most apps and websites</p>
-  
+
+  <h2>Limitations</h2>
+    
   <ol>
-    <li>there is no sign up process, username or password</li>
-    <li>data is stored locally and synced only to the user's other devices, when they decide. The sync feature requires a network connection and WebRTC support.</li>
-    <li>the application works offline, including backing up and restoring data.</li>
-  </ol>
-  
-  <p>The first two items are tradeoffs:</p>
-  
-  <ol>
-    <li>Lack of username and password means anybody who walks up can see and edit tasks</li>
-    <li>The manual syncing is far less convenient than automatically syncing through a server that stores a copy.</li>
+    <li>no login means no logging out or password protecting tasks</li>
+    <li>to sync tasks, both devices must be online at the same time, because tasks aren't saved anywhere else.</li>
+    <li>no scheduling, catergorization, labelling, re-ordering, snoozing, sharing or grouping of tasks–brutally minimalist</li>
   </ol>
   
   <h2>How it works</h2>
   
-  <p>In addition to the core ideas, Tasks was born of the desire to learn about:</p>
+  <p>The achitecture is distributed–every instance of the application is fully functional. To resolve changes made in separate instances, Tasks implements a <a href="https://crdt.tech/">CRDT</a> (Conflict-free Replicated Data Type).</p>
   
+  <h2>Technologies</h2>
+
+  <p>The application uses the following technologies:</p>
+
   <ol>
     <li><a href="https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps">PWAs</a>: a group of technologies that can help websites work offline</li>
     <li><a href="https://developer.mozilla.org/en-US/docs/Web/API/indexedDB">indexedDB</a>: a database widely supported in web browsers</li>
     <li><a href="https://developer.mozilla.org/en-US/docs/Glossary/WebRTC">WebRTC</a>: a P2P technology that allows direct connections between two devices</li>
+    <li><a href="https://kit.svelte.dev/">SvelteKit</a>: a framework for developing web applications with Svelte</li>
   </ol>
-  
-  <p>The "sync only when you choose" feature also requires a way to reconcile actions, like completing or editing a task, taken on separate devices during overlapping time periods. To solve this, Tasks takes a simplified, <a href="https://crdt.tech/">CRDT</a> (Conflict-free Replicated Data Type) -inspired approach.</p>
-  
+    
   <h2>License</h2>
   <div id="license">
     <p>Copyright (c) 2023 Jonathan Hawley-Peters</p>
@@ -55,7 +54,5 @@
     LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
     SOFTWARE.</p>
-  </div>
-  
-  <!-- describe how actions are used for syncing and rebuilding state -->
+  </div>  
 </div>
