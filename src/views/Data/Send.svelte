@@ -12,7 +12,7 @@
 
     QRCode.toCanvas(
       QRcodeCanvas,
-      $syncState.peerId,
+      `https://192.168.0.204:5173/?id=${encodeURIComponent($syncState.peerId)}#data`,
       { scale: 6, errorCorrectionLevel: 'H' },
       (error: unknown) => {
         if (!error) return;

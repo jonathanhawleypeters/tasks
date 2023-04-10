@@ -300,6 +300,10 @@ export const mergeExternalActions = (actions: Action[]) => {
 
         updatedTasks
           .forEach(task => {
+            if (!task.createdAt) {
+              console.warn("task without createdAt encountered", task);
+              return;
+            }
             taskStore.add(task);
           });
 

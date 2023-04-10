@@ -7,6 +7,9 @@
 	import SyncStatus from './SyncStatus.svelte';
 	import type { SyncMode } from '../../helpers/types';
 	import Backup from './Backup.svelte';
+	import { onMount } from 'svelte';
+	import { connectToPeer, startPeerConnection } from '../../helpers/syncTasks';
+	import syncState from '../../helpers/syncState';
 
   let mode: SyncMode = null;
 
@@ -18,6 +21,24 @@
   };
 
   const setMode = (m: SyncMode) => mode = m;
+
+  onMount(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+
+    const id = urlParams.get("id");
+    if (id) {
+      // remove the querystring
+      history.replaceState(null, '', location.origin + location.pathname + location.hash);
+      mode = "recieve";
+      peer = startPeerConnection(() => {
+        connectToPeer(peer as Peer, id);
+      });
+      if (!peer) {
+        syncState.update(() => ({ status: "errored", errorMessage: "No PeerJS instance" }));
+        return;
+      }
+    }
+  });
 </script>
 
 <div id="data" class="section">

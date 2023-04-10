@@ -17,6 +17,12 @@
 {#if mode !== null}
   <h3>Status</h3>
   <p>{$syncState.status}</p>
+  {#if typeof $syncState.sent === 'number'}
+    <p>Sent {$syncState.sent} changes</p>
+  {/if}
+  {#if typeof $syncState.recieved === 'number'}
+    <p>Recieved {$syncState.recieved} changes</p>
+  {/if}
   <button on:click|preventDefault={handleReset}>Reset</button>
 {/if}
 {#if $syncState.status === "errored"}

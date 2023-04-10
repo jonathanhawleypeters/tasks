@@ -1,7 +1,7 @@
 import { browser } from '$app/environment';
 import { type DataConnection, Peer } from 'peerjs';
 import { historyRows, mergeExternalActions } from './database';
-import type { Action } from "./history";
+import type { Action } from "./types";
 import syncState from './syncState';
 
 type ActionsPayload = {
@@ -21,7 +21,7 @@ const onConnection = (connection: DataConnection) => {
   connection.on("data", onData(connection));
 };
 
-export const startPeerConnection = () => {
+export const startPeerConnection = (onOpen?: () => void) => {
   if (browser) {
     syncState.update(() => ({ status: "contacting peer server" }));
     
@@ -30,6 +30,11 @@ export const startPeerConnection = () => {
     peer.on("error", (e) => syncState.update(() => ({ status: "errored", errorMessage: String(e) })));
 
     peer.on("open", (id) => {
+      if (onOpen) {
+        onOpen();
+        // status?
+        return;
+      }
       syncState.update((state) => (state.status === "awaiting peer id" ? state : { status: "id generated", peerId: id }));
     });
 
@@ -99,7 +104,10 @@ const onData = (connection: DataConnection) => (payload: unknown) => {
 
         syncState.update(() => ({ status: "connected", recieved: actions.length }));
 
-        if (!actions.length) return;
+        if (!actions.length) {
+          syncState.update(() => ({ status: "no updates" })); 
+          return;
+        }
         mergeExternalActions(actions);
         return;
       }
