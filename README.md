@@ -23,7 +23,9 @@ You can preview the production build with `yarn preview`.
 To deploy as a CloudFlare page, configure the build as follows:
 
 Build command: npm run build
+
 Build output directory:/build
+
 Root directory: /
 
 Set the env variable:
