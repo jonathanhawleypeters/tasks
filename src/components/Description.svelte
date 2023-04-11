@@ -8,13 +8,12 @@
   let input: HTMLDivElement;
   
   const handleKeyDown = (event: KeyboardEvent) => {
-    if (event.key === '|') {
-      event.preventDefault();
-      return;
-    }
     if (!(event.key === 'Enter')) return;
 
     event.preventDefault();
+
+    // no-op, don't make an entry in the history log
+    if (task.description === updatedDescription) return;
 
     task.description = updatedDescription;
     updateDescription(task.createdAt, updatedDescription);
