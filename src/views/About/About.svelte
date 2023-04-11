@@ -19,6 +19,7 @@
     <li>to sync tasks over a network, both devices must be online at the same time, because tasks aren't saved anywhere else.</li>
     <li>because Tasks is a proof-of-concept, it is brutally minimalist which means no scheduling, catergorization, labelling, re-ordering, snoozing, sharing or grouping of tasks. Partly, this is because such features would make implementing a CRDT more complicated</li>
     <li>presently, deleting data requires either 1) deleting all data via site settings in the browser or 2) opening developer tools and fiddling with indexedDB for fine-grained control</li>
+    <li>the application is not optimized to display large amounts of data, such as a user might accumulate over months or years</li>
   </ol>
   
   <h2>How it works</h2>
