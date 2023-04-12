@@ -5,39 +5,44 @@
 	import { dateForDisplay } from '../../helpers/dates';
   import type { Action } from '../../helpers/types';
 
-  $: taskHistory = groupBy($history, actionId);
+  $: taskHistory = Object.values(groupBy($history, actionId));
 
   const taskDescription = (rows: Action[]) => rows.reduce((acc, row) => row.description ? row.description : acc, '');
 </script>
 
 <div id="history" class="section">
 
-  <table>
-    <thead>
-      <td>Kind</td>
-      <td>Time</td>
-      <td>Description</td>
-    </thead>
-    {#each Object.values(taskHistory) as task}
-      <tbody>
-        <tr>
-          <td colspan={3}>
-            <h3>
-              {taskDescription(task)}
-            <h3>
-          </td>
-        </tr>
+  {#if taskHistory.length > 0}
+    <table>
+      <thead>
+        <td>Kind</td>
+        <td>Time</td>
+        <td>Description</td>
+      </thead>
+      {#each taskHistory as task}
+        <tbody>
+          <tr>
+            <td colspan={3}>
+              <h3>
+                {taskDescription(task)}
+              <h3>
+            </td>
+          </tr>
 
-        <!-- grouping rows by date -->
-        {#each Object.entries(groupBy(task, actionDate)) as [date, rows]}
-          <td colspan={3}><i>{dateForDisplay(new Date(Date.parse(date)))}</i></td>
-          {#each rows as row}
-            <HistoryRow row={row} />
+          <!-- grouping rows by date -->
+          {#each Object.entries(groupBy(task, actionDate)) as [date, rows]}
+            <td colspan={3}><i>{dateForDisplay(new Date(Date.parse(date)))}</i></td>
+            {#each rows as row}
+              <HistoryRow row={row} />
+            {/each}
           {/each}
-        {/each}
-      </tbody>
-    {/each}
-  </table>
+        </tbody>
+      {/each}
+    </table>
+
+  {:else}
+    <p>A table of history will appear here once a task is added</p>
+  {/if}
 </div>
 
 <style>
