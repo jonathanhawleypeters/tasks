@@ -1,5 +1,5 @@
 <div id="about" class="section">
-  <p>Tasks is a proof-of-concept. It is built so that data stays on the user's device(s) and in their control.</p>
+  <p>Tasks is a proof-of-concept. Data stays on the user's device(s).</p>
 
   <h2>Features</h2>
 
@@ -17,14 +17,15 @@
   <ol>
     <li>no login means no logging out or password protecting tasks</li>
     <li>to sync tasks over a network, both devices must be online at the same time, because tasks aren't saved anywhere else.</li>
-    <li>because Tasks is a proof-of-concept, it is brutally minimalist which means no scheduling, catergorization, labelling, re-ordering, snoozing, sharing or grouping of tasks. Partly, this is because such features would make implementing a CRDT more complicated</li>
+    <li>because Tasks is a proof-of-concept, it is brutally minimalist which means no scheduling, catergorization, labelling, re-ordering, snoozing, sharing or grouping of tasks.</li>
     <li>presently, deleting data requires either 1) deleting all data via site settings in the browser or 2) opening developer tools and fiddling with indexedDB for fine-grained control</li>
-    <li>the application is not optimized to display large amounts of data, such as a user might accumulate over months or years</li>
+    <li>the application is not optimized to display large amounts of data</li>
+    <li>no UI indication of success or failure when restoring from backup</li>
   </ol>
   
   <h2>How it works</h2>
   
-  <p>The achitecture is distributed–each instance of Tasks works in isolation. To resolve changes made in separate instances, Tasks implements a <a href="https://crdt.tech/">CRDT</a> (Conflict-free Replicated Data Type).</p>
+  <p>Each instance of Tasks works in isolation–a distributed architecture. To resolve changes made in separate instances, Tasks implements a <a href="https://crdt.tech/">CRDT</a> (Conflict-free Replicated Data Type).</p>
   
   <h2>Technologies</h2>
 
