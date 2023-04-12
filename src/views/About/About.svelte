@@ -16,9 +16,9 @@
     
   <ol>
     <li>no login means no logging out or password protecting tasks</li>
-    <li>to sync tasks over a network, both devices must be online at the same time, because tasks aren't saved anywhere else.</li>
-    <li>because Tasks is a proof-of-concept, it is brutally minimalist which means no scheduling, catergorization, labelling, re-ordering, snoozing, sharing or grouping of tasks.</li>
-    <li>presently, deleting data requires either 1) deleting all data via site settings in the browser or 2) opening developer tools and fiddling with indexedDB for fine-grained control</li>
+    <li>to sync tasks over a network, both devices must be online at the same time</li>
+    <li>because Tasks is a proof-of-concept, the task management features are minimal</li>
+    <li>deleting data requires use of browser settings or indexedDB via the console</li>
     <li>the application is not optimized to display large amounts of data</li>
     <li>no UI indication of success or failure when restoring from backup</li>
   </ol>
@@ -34,7 +34,7 @@
   <ol>
     <li><a href="https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps">PWAs</a>: a group of technologies that can help websites work offline</li>
     <li><a href="https://developer.mozilla.org/en-US/docs/Web/API/indexedDB">indexedDB</a>: a database widely supported in web browsers</li>
-    <li><a href="https://developer.mozilla.org/en-US/docs/Glossary/WebRTC">WebRTC</a>: a P2P technology that allows direct connections between two in-browser applications</li>
+    <li><a href="https://developer.mozilla.org/en-US/docs/Glossary/WebRTC">WebRTC</a>: a P2P technology that allows connections between in-browser applications</li>
     <li><a href="https://kit.svelte.dev/">SvelteKit</a>: a framework for developing web applications with Svelte</li>
   </ol>
     
