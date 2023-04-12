@@ -33,7 +33,7 @@
     bind:this={input}
     bind:textContent={updatedDescription}
   />
-  <div class="saveExplanation" hidden={updatedDescription === task.description}>press enter / return key to save</div>
+  <div class="saveExplanation" hidden={updatedDescription === task.description}>press enter / return / &crarr; key to save</div>
 </div>
 
 <style>
