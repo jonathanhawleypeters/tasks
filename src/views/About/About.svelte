@@ -1237,7 +1237,7 @@ yocto-queue@0.1.0 [license(s): MIT]
   details h2 {
     display: inline-block;
   }
-  details > p, summary > p {
+  details > p, summary > p, #license > p {
     font-family: ui-monospace, 'Cascadia Code', 'Source Code Pro', Menlo, Consolas, 'DejaVu Sans Mono', monospace;
   }
   .licenses {
