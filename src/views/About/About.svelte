@@ -41,6 +41,14 @@
     <li><a href="https://developer.mozilla.org/en-US/docs/Glossary/WebRTC">WebRTC</a>: a P2P technology that allows connections between in-browser applications</li>
     <li><a href="https://kit.svelte.dev/">SvelteKit</a>: a framework for developing web applications with Svelte</li>
   </ol>
+
+  <h2>GitHub</h2>
+
+  <p>
+    <a href="https://github.com/jonathanhawleypeters/tasks">Code</a>
+    <a href="https://github.com/jonathanhawleypeters/tasks/issues">Issues</a>
+    <a href="https://github.com/jonathanhawleypeters/tasks/pulls">Pull requests</a>
+  </p>
     
   <h2>License</h2>
 
