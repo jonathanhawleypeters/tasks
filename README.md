@@ -1,6 +1,6 @@
 # Tasks
 
-Tasks is a proof-of-concept. It is built so that data stays on the user's device(s) and in their control. See the [about](https://tasks.page.dev/#about) page for more.
+Tasks is a proof-of-concept. It is built so that data stays on the user's device(s) and in their control. See the [about](https://tasks.pages.dev/#about) page for more.
 
 ## Developing
 
